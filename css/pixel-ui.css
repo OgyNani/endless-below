@@ -26,6 +26,7 @@
 .pixel-divider,
 .pixel-pointer,
 .pixel-icon,
+.hero__scroll-arrow,
 .btn,
 .site-nav__link,
 .filter-btn,
@@ -54,6 +55,8 @@ h3,
 .brand__name,
 .hero__title,
 .hero__creed,
+.hero__scroll,
+.hero__scroll-label,
 .hero__hook,
 .page-header__title,
 .section__title,
@@ -76,6 +79,12 @@ h3,
 
 .hero__creed {
   letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero__scroll,
+.hero__scroll-label {
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 

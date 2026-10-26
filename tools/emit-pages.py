@@ -141,7 +141,7 @@ def page(
 {SIGIL}
               <span class="brand__name">Endless Below</span>
             </a>
-            <p class="site-footer__tagline">A dark fantasy online action RPG. How deep are you willing to go?</p>
+            <p class="site-footer__tagline">A dark fantasy online action RPG.</p>
           </div>
 
           <div class="site-footer__links">

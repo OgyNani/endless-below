@@ -145,33 +145,47 @@
   align-items: center;
   gap: var(--sp-2);
   transform: translateX(-50%);
-  color: var(--parchment-700);
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: var(--ls-wide);
+  color: var(--ui-gold-bright);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
 }
 
 .hero__scroll:hover {
-  color: var(--cyan);
+  color: var(--parchment-100);
+  filter: brightness(1.12);
 }
 
-.hero__scroll-rail {
+.hero__scroll-track {
   position: relative;
-  width: 1px;
-  height: 46px;
+  width: var(--ui-icon-size);
+  height: calc(var(--ui-icon-size) * 1.75);
   overflow: hidden;
-  background: var(--rule);
 }
 
-.hero__scroll-rail::after {
-  content: "";
+.hero__scroll-hint {
   position: absolute;
-  inset: 0 0 auto;
-  height: 16px;
-  background: linear-gradient(180deg, transparent, var(--cyan));
+  left: 0;
+  top: 0;
+  width: var(--ui-icon-size);
+  height: var(--ui-icon-size);
   animation: scroll-hint 2.6s var(--ease) infinite;
+}
+
+.hero__scroll-arrow {
+  display: block;
+  width: var(--ui-icon-size);
+  height: var(--ui-icon-size);
+  background-image: var(--ui-img-arrow-right);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  transform: rotate(90deg);
 }
 
 @keyframes scroll-hint {
@@ -183,7 +197,7 @@
     opacity: 1;
   }
   100% {
-    transform: translateY(290%);
+    transform: translateY(160%);
     opacity: 0;
   }
 }
