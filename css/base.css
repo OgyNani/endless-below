@@ -1,0 +1,286 @@
+/* ==========================================================================
+   ENDLESS BELOW — reset, element defaults, atmosphere, utilities
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Anchored patch-note / section links must clear the fixed header. */
+  scroll-padding-top: calc(var(--header-h) + var(--sp-5));
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body.is-locked {
+  overflow: hidden;
+}
+
+/* --- Atmospheric background layers ---------------------------------------
+   Pure CSS: an abyssal glow from below, a cold shaft from above, a stone
+   grain and a vignette. No image requests, so it never blocks paint.      */
+.atmos {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-atmos);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.atmos__glow {
+  position: absolute;
+  inset: -10% -10% -20%;
+  background:
+    radial-gradient(90% 55% at 50% 118%, rgba(111, 95, 184, 0.22), transparent 70%),
+    radial-gradient(70% 40% at 18% 8%, rgba(79, 111, 159, 0.14), transparent 72%),
+    radial-gradient(60% 45% at 88% 24%, rgba(111, 179, 192, 0.08), transparent 70%),
+    linear-gradient(180deg, #080a0c 0%, #050506 55%, #030304 100%);
+}
+
+.atmos__grain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--noise);
+  background-size: 160px 160px;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+}
+
+.atmos__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 85% at 50% 40%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+/* Slow drifting motes. Canvas is optional — JS skips it for reduced motion. */
+.atmos__motes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.55;
+}
+
+/* --- Typography ----------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 var(--sp-4);
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: var(--lh-heading);
+  color: var(--heading);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+}
+h2 {
+  font-size: var(--fs-h2);
+}
+h3 {
+  font-size: var(--fs-h3);
+}
+h4 {
+  font-size: var(--fs-body);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--parchment-300);
+}
+
+p {
+  margin: 0 0 var(--sp-4);
+  max-width: var(--width-text);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--parchment-200);
+  text-decoration-color: var(--rule-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color var(--dur-fast) var(--ease),
+    text-decoration-color var(--dur-fast) var(--ease);
+}
+
+a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+strong {
+  font-weight: 600;
+  color: var(--parchment-100);
+}
+
+em {
+  font-style: italic;
+  color: var(--parchment-300);
+}
+
+ul,
+ol {
+  margin: 0 0 var(--sp-4);
+  padding-left: 1.25em;
+}
+
+li {
+  margin-bottom: var(--sp-2);
+}
+
+blockquote {
+  margin: 0;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+  border: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+hr {
+  height: 1px;
+  margin: var(--sp-6) 0;
+  border: 0;
+  background: var(--rule);
+}
+
+::selection {
+  background: rgba(111, 179, 192, 0.3);
+  color: var(--parchment-100);
+}
+
+/* --- Focus ---------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Never remove focus rings; only hide them for mouse users. */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --- Utilities ------------------------------------------------------------ */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: var(--sp-4);
+  z-index: var(--z-overlay);
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--panel-solid);
+  border: var(--border-strong);
+  color: var(--parchment-100);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(-120%);
+  transition: transform var(--dur) var(--ease);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* Progressive enhancement: data-driven catalogues hide their JS-only
+   surface when scripting is off, and vice versa. */
+.js .no-js-only {
+  display: none !important;
+}
+
+.no-js .js-only {
+  display: none !important;
+}
+
+/* --- Reduced motion ------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .atmos__motes {
+    display: none;
+  }
+}
