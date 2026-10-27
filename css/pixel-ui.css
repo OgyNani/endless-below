@@ -26,7 +26,9 @@
 .pixel-divider,
 .pixel-pointer,
 .pixel-icon,
-.hero__scroll-arrow,
+.hero__img,
+.home-premise__img,
+.character-idle-sprite,
 .btn,
 .site-nav__link,
 .filter-btn,
@@ -55,8 +57,6 @@ h3,
 .brand__name,
 .hero__title,
 .hero__creed,
-.hero__scroll,
-.hero__scroll-label,
 .hero__hook,
 .page-header__title,
 .section__title,
@@ -79,12 +79,6 @@ h3,
 
 .hero__creed {
   letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.hero__scroll,
-.hero__scroll-label {
-  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -143,7 +137,8 @@ h3,
   box-shadow: none;
   color: var(--ui-ink);
   font-family: var(--font-ui);
-  font-size: 0.95rem;
+  --btn-fs: 0.95rem;
+  font-size: var(--btn-fs);
   font-weight: 400;
   letter-spacing: 0.04em;
   line-height: 1.1;
@@ -170,8 +165,8 @@ h3,
   border-image-source: var(--ui-img-btn-hover);
   background: transparent;
   box-shadow: none;
-  transform: none;
   filter: none;
+  transform: none;
 }
 
 .pixel-button:active,
@@ -179,6 +174,25 @@ h3,
 .nav-toggle:active {
   border-image-source: var(--ui-img-btn-pressed);
   transform: none;
+}
+
+.btn__label {
+  display: inline-block;
+  transform: translateY(0);
+  transform-origin: 50% 50%;
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.pixel-button:hover .btn__label,
+.btn:hover .btn__label,
+.nav-toggle:hover .btn__label {
+  transform: translateY(-2px) scale(calc((1em + 2px) / 1em));
+}
+
+.pixel-button:active .btn__label,
+.btn:active .btn__label,
+.nav-toggle:active .btn__label {
+  transform: translateY(0) scale(calc((1em + 2px) / 1em));
 }
 
 .pixel-button:focus-visible,
@@ -210,7 +224,17 @@ h3,
 
 .btn--sm {
   padding: 0 0.45em;
-  font-size: 0.85rem;
+  --btn-fs: 0.85rem;
+  font-size: var(--btn-fs);
+}
+
+.gender-toggle__btn {
+  --btn-fs: 0.8rem;
+  font-size: var(--btn-fs);
+}
+
+.gender-toggle__btn[aria-pressed="true"] {
+  border-image-source: var(--ui-img-btn-pressed);
 }
 
 .btn--block {
@@ -275,6 +299,18 @@ h3,
    At 4× that empty padding reads as a gap even when CSS gap is 0.
    Pull following tabs back by one cap so the gold edges meet. */
 @media (min-width: 1241px) {
+  .site-header__inner {
+    position: relative;
+    z-index: 1;
+    align-items: center;
+  }
+
+  .site-nav {
+    align-self: flex-end;
+    position: relative;
+    z-index: 1;
+  }
+
   .site-nav__link {
     position: relative;
   }
@@ -534,9 +570,12 @@ h3,
 .site-header--solid::after {
   content: "";
   position: absolute;
-  left: var(--gutter);
-  right: var(--gutter);
-  bottom: 0;
+  left: 0;
+  right: 0;
+  /* Sprite gold sits in the middle of the 16px slice; shift down so the
+     bar runs along the bottom edge of the dark fill. */
+  bottom: calc(var(--ui-unit) / -2);
+  z-index: 0;
   height: var(--ui-unit);
   border-style: solid;
   border-color: transparent;
@@ -698,7 +737,8 @@ h3,
 
   .btn,
   .pixel-button {
-    font-size: 0.85rem;
+    --btn-fs: 0.85rem;
+    font-size: var(--btn-fs);
   }
 
   .hero__title {

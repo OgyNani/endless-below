@@ -97,6 +97,34 @@
     return Array.prototype.slice.call((scope || doc).querySelectorAll(selector));
   }
 
+  /**
+   * Wrap button copy so hover/press can scale and shift the text without
+   * stretching the 9-slice chrome.
+   */
+  function wrapButtonLabel(btn) {
+    if (!btn || btn.querySelector(":scope > .btn__label")) return;
+    var label = doc.createElement("span");
+    label.className = "btn__label";
+    var move = [];
+    Array.prototype.slice.call(btn.childNodes).forEach(function (node) {
+      if (node.nodeType === 1 && node.classList &&
+          (node.classList.contains("nav-toggle__bars") ||
+           node.classList.contains("caret"))) {
+        return;
+      }
+      move.push(node);
+    });
+    if (!move.length) return;
+    move.forEach(function (node) {
+      label.appendChild(node);
+    });
+    btn.appendChild(label);
+  }
+
+  function wrapButtonLabels(scope) {
+    $$(".btn, .pixel-button, .nav-toggle", scope).forEach(wrapButtonLabel);
+  }
+
   /* ======================================================================
      Asset primitives
      ====================================================================== */
@@ -234,6 +262,64 @@
     }
 
     return sprite(opts.fallbackSprite, "lg");
+  }
+
+  /**
+   * 5-frame horizontal idle spritesheet (32×32 source).
+   * Default: frame 1, paused. Pass animated:true to loop immediately
+   * (opened detail). Card hover is handled in CSS on .class-card.
+   *
+   * @param {Object} idle - { variants, defaultVariant, frameSize, frames, duration }
+   * @param {Object} [opts] - { scale, variant, animated, label }
+   */
+  function characterIdleSprite(idle, opts) {
+    opts = opts || {};
+    idle = idle || {};
+    var variant = opts.variant || idle.defaultVariant || "male";
+    var variants = idle.variants || {};
+    var sheet = variants[variant] || variants.male || variants.female;
+    var scale = opts.scale || 5;
+    var classes = "character-idle-sprite";
+    if (opts.animated && !reduceMotion) classes += " character-idle-sprite--animated";
+
+    if (!sheet) {
+      return placeholder({
+        label: opts.label || "IDLE SPRITE",
+        dims: "32 × 32",
+        ratio: "1x1"
+      });
+    }
+
+    return h("div", {
+      class: classes,
+      attrs: {
+        role: "img",
+        "aria-label": opts.label || "Character idle",
+        "data-idle-variant": variant
+      },
+      style: {
+        "--idle-sheet": "url(\"" + toAbsoluteUrl(sheet) + "\")",
+        "--idle-frame": String(idle.frameSize || 32),
+        "--idle-frames": String(idle.frames || 5),
+        "--idle-scale": String(scale),
+        "--idle-duration": idle.duration || "1s"
+      }
+    });
+  }
+
+  function applyIdleVariant(node, idle, variant) {
+    if (!node || !idle) return;
+    var variants = idle.variants || {};
+    var sheet = variants[variant] || variants.male || variants.female;
+    if (!sheet) return;
+    node.style.setProperty("--idle-sheet", "url(\"" + toAbsoluteUrl(sheet) + "\")");
+    node.setAttribute("data-idle-variant", variant);
+    node.style.backgroundPosition = "0 0";
+    if (node.classList.contains("character-idle-sprite--animated")) {
+      node.style.animation = "none";
+      void node.offsetWidth;
+      node.style.animation = "";
+    }
   }
 
   /* ======================================================================
@@ -741,6 +827,8 @@
     placeholder: placeholder,
     sprite: sprite,
     idleAnimation: idleAnimation,
+    characterIdleSprite: characterIdleSprite,
+    applyIdleVariant: applyIdleVariant,
     modal: modal,
     lightbox: lightbox,
     formatDate: formatDate,
@@ -754,8 +842,26 @@
   /* ======================================================================
      Boot
      ====================================================================== */
+  function initButtonLabels() {
+    wrapButtonLabels(doc);
+    if (typeof MutationObserver === "undefined" || !doc.body) return;
+    var observer = new MutationObserver(function (records) {
+      records.forEach(function (record) {
+        Array.prototype.forEach.call(record.addedNodes, function (node) {
+          if (node.nodeType !== 1) return;
+          if (node.matches && node.matches(".btn, .pixel-button, .nav-toggle")) {
+            wrapButtonLabel(node);
+          }
+          if (node.querySelectorAll) wrapButtonLabels(node);
+        });
+      });
+    });
+    observer.observe(doc.body, { childList: true, subtree: true });
+  }
+
   function init() {
     initHeader();
+    initButtonLabels();
     scanReveal();
     initParallax();
     initMotes();

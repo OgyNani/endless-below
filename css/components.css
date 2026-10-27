@@ -446,6 +446,58 @@
   }
 }
 
+/* Character idle spritesheet: 5 × 32px frames, horizontal.
+   Default shows frame 1. Animation is opt-in via --animated or card hover. */
+.character-idle-sprite {
+  --idle-frame: 32;
+  --idle-frames: 5;
+  --idle-scale: 5;
+  --idle-duration: 1s;
+  --_idle-display: calc(var(--idle-frame) * var(--idle-scale) * 1px);
+  width: var(--_idle-display);
+  height: var(--_idle-display);
+  flex: 0 0 auto;
+  background-image: var(--idle-sheet);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: calc(var(--_idle-display) * var(--idle-frames)) var(--_idle-display);
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  -ms-interpolation-mode: nearest-neighbor;
+  animation: none;
+}
+
+@keyframes character-idle-steps {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: calc(var(--_idle-display) * var(--idle-frames) * -1);
+  }
+}
+
+.character-idle-sprite--animated {
+  animation: character-idle-steps var(--idle-duration) steps(5) infinite;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .class-card:hover .character-idle-sprite,
+  .class-card:focus-within .character-idle-sprite {
+    animation: character-idle-steps var(--idle-duration) steps(5) infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character-idle-sprite,
+  .character-idle-sprite--animated,
+  .class-card:hover .character-idle-sprite,
+  .class-card:focus-within .character-idle-sprite {
+    animation: none !important;
+    background-position: 0 0 !important;
+  }
+}
+
 /* Plinth that sprites stand on, with a soft cast shadow. */
 .sprite-stage {
   position: relative;
@@ -699,8 +751,28 @@
 
 .class-card__art {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   aspect-ratio: 4 / 5;
   overflow: hidden;
+  background: linear-gradient(180deg, #0d0f13, #060708);
+}
+
+.gender-toggle {
+  position: absolute;
+  top: var(--sp-2);
+  right: var(--sp-2);
+  z-index: 2;
+  display: flex;
+  gap: 4px;
+}
+
+.gender-toggle__btn {
+  min-width: 2em;
+  padding: 0 0.35em;
+  font-size: 0.8rem;
+  line-height: 1;
 }
 
 .class-card__art .ph {

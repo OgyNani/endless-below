@@ -144,10 +144,12 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* ---- Pixel art display sizes -------------------------------------------
-     Source sprites are 16x16. Display sizes stay integer multiples so edges
-     remain perfectly crisp: 96 = 6x, 128 = 8x, 160 = 10x, 192 = 12x.        */
+     Idle sheets are 32×32 frames; display sizes stay integer multiples.     */
+  --idle-frame-size: 32;
+  --idle-frame-count: 5;
+  --idle-duration: 1s;
   --px-sprite-source: 16px;
-  --px-size-sm: 64px;   /*  4x */
+  --px-size-sm: 64px;   /*  4x of 16px */
   --px-size-md: 96px;   /*  6x */
   --px-size-lg: 128px;  /*  8x */
   --px-size-xl: 160px;  /* 10x */

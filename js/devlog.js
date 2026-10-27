@@ -97,8 +97,10 @@
         "aria-controls": bodyId
       },
       children: [
-        h("span", { text: "Read entry" }),
-        h("span", { class: "caret", attrs: { "aria-hidden": "true" }, text: "↓" })
+        h("span", {
+          class: "btn__label",
+          children: [h("span", { class: "btn__copy", text: "Read entry" })]
+        })
       ]
     });
 
@@ -106,8 +108,8 @@
       var open = toggle.getAttribute("aria-expanded") === "true";
       toggle.setAttribute("aria-expanded", open ? "false" : "true");
       article.hidden = open;
-      toggle.firstChild.textContent = open ? "Read entry" : "Close entry";
-      toggle.lastChild.textContent = open ? "↓" : "↑";
+      var copy = toggle.querySelector(".btn__copy");
+      if (copy) copy.textContent = open ? "Read entry" : "Close entry";
     });
 
     var node = h("article", {

@@ -188,21 +188,13 @@ def page(
 HOME = r"""
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero__art" data-parallax="-0.05">
-          <!-- TODO(art): replace this placeholder with the final key art:
-               <img class="hero__img" src="/assets/backgrounds/hero-key-art.webp"
-                    alt="" width="2560" height="1440" fetchpriority="high"> -->
-          <div class="ph" role="img" aria-label="Placeholder: hero key art, 2560 by 1440">
-            <span class="ph__label">Hero Key Art</span>
-            <span class="ph__dims">2560 × 1440 · 16:9 · WebP</span>
-            <span class="ph__note">A city, the Abyss, dark fantasy atmosphere. Subject centred, centre-left kept clear for the title, must crop safely to mobile portrait.</span>
-          </div>
+          <img class="hero__img" src="/assets/backgrounds/main.png"
+               alt="" width="2560" height="1440" fetchpriority="high">
         </div>
         <div class="hero__scrim" aria-hidden="true"></div>
 
         <div class="container hero__inner">
           <div class="hero__content">
-            <p class="eyebrow">Online action RPG · In development</p>
-
             <h1 class="hero__title" id="hero-title">
               <span>Endless</span>
               <span class="hero__title-below">Below</span>
@@ -220,15 +212,6 @@ HOME = r"""
             </div>
           </div>
         </div>
-
-        <a class="hero__scroll" href="#last-city">
-          <span class="hero__scroll-label">Descend</span>
-          <span class="hero__scroll-track" aria-hidden="true">
-            <span class="hero__scroll-hint">
-              <span class="hero__scroll-arrow"></span>
-            </span>
-          </span>
-        </a>
       </section>
 
       <section class="section home-premise" id="last-city" aria-labelledby="last-city-title">
@@ -242,12 +225,8 @@ HOME = r"""
               <p>Beyond its walls, almost nothing remains.</p>
             </div>
             <div class="home-premise__art frame">
-              <!-- TODO(art): replace with the last-city key art -->
-              <div class="ph ph--16x9" role="img" aria-label="Placeholder: the last city above, 1600 by 900">
-                <span class="ph__label">The Last City Above</span>
-                <span class="ph__dims">1600 × 900 · 16:9 · WebP</span>
-                <span class="ph__note">A surface city around the mouth of the Abyss. Dark. Still standing.</span>
-              </div>
+              <img class="home-premise__img" src="/assets/backgrounds/city.png"
+                   alt="" width="1600" height="900">
             </div>
           </div>
         </div>
@@ -266,12 +245,8 @@ HOME = r"""
               <p>No descent promises the same path twice.</p>
             </div>
             <div class="home-premise__art frame">
-              <!-- TODO(art): replace with abyss atmosphere art -->
-              <div class="ph ph--16x9" role="img" aria-label="Placeholder: the Abyss below, 1600 by 900">
-                <span class="ph__label">Everything Else Lies Below</span>
-                <span class="ph__dims">1600 × 900 · 16:9 · WebP</span>
-                <span class="ph__note">Depths that should not exist. Forests, ruins, seas, lost places.</span>
-              </div>
+              <img class="home-premise__img" src="/assets/backgrounds/abbys.png"
+                   alt="" width="1600" height="900">
             </div>
           </div>
         </div>
@@ -419,7 +394,7 @@ PAGES = [
         "canonical": "https://endless-below.com/home/",
         "og_title": "ENDLESS BELOW — Dark Fantasy Online Action RPG",
         "body": HOME,
-        "scripts": ["/js/main.js", "/data/devlog.js", "/js/devlog.js"],
+        "scripts": ["/js/main.js?v=3", "/data/devlog.js?v=3", "/js/devlog.js?v=3"],
         "header_solid": False,
     },
     {
@@ -440,7 +415,7 @@ PAGES = [
         "canonical": "https://endless-below.com/devlog/",
         "og_title": "Devlog — ENDLESS BELOW",
         "body": DEVLOG,
-        "scripts": ["/js/main.js", "/data/devlog.js", "/js/devlog.js"],
+        "scripts": ["/js/main.js?v=3", "/data/devlog.js?v=3", "/js/devlog.js?v=3"],
     },
     {
         "out": "404.html",

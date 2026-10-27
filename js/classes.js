@@ -15,6 +15,68 @@
   if (!EB) return;
 
   var h = EB.h;
+  var selectedVariant = {};
+
+  function currentVariant(cls) {
+    var idle = (cls.art || {}).idle || {};
+    return selectedVariant[cls.id] || idle.defaultVariant || "male";
+  }
+
+  function setVariant(cls, variant) {
+    selectedVariant[cls.id] = variant;
+    EB.$$("[data-idle-for=\"" + cls.id + "\"]").forEach(function (el) {
+      EB.applyIdleVariant(el, cls.art.idle, variant);
+    });
+    EB.$$("[data-gender-for=\"" + cls.id + "\"] .gender-toggle__btn").forEach(function (btn) {
+      btn.setAttribute(
+        "aria-pressed",
+        btn.getAttribute("data-gender") === variant ? "true" : "false"
+      );
+    });
+  }
+
+  function genderToggle(cls) {
+    var current = currentVariant(cls);
+    var variants = ((cls.art || {}).idle || {}).variants || {};
+    var options = [
+      { id: "male", label: "M", available: !!variants.male },
+      { id: "female", label: "F", available: !!variants.female }
+    ].filter(function (opt) {
+      return opt.available;
+    });
+
+    if (options.length < 2) return null;
+
+    var group = h("div", {
+      class: "gender-toggle",
+      attrs: {
+        role: "group",
+        "aria-label": cls.name + " appearance",
+        "data-gender-for": cls.id
+      }
+    });
+
+    options.forEach(function (opt) {
+      var btn = h("button", {
+        class: "btn btn--sm gender-toggle__btn",
+        attrs: {
+          type: "button",
+          "data-gender": opt.id,
+          "aria-pressed": current === opt.id ? "true" : "false",
+          "aria-label": cls.name + ", " + opt.label
+        },
+        text: opt.label
+      });
+      btn.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        setVariant(cls, opt.id);
+      });
+      group.appendChild(btn);
+    });
+
+    return group;
+  }
 
   /* Accent colours come from data as hex; cards need them with alpha. */
   function hexToRgba(hex, alpha) {
@@ -83,18 +145,15 @@
       children: [
         h("div", {
           class: "class-card__art",
-          children: [
-            EB.figure(cls.art.portrait),
-            /* Idle animation sits over the art. 16px source at 4x = 64px. */
-            h("div", {
-              class: "class-card__sprite",
-              children: EB.idleAnimation(cls.art.idle, {
-                scale: 4,
-                fallbackSprite: cls.art.sprite,
-                label: cls.name + " idle animation (placeholder)"
-              })
-            })
-          ]
+          children: (function () {
+            var sprite = EB.characterIdleSprite(cls.art.idle, {
+              scale: 5,
+              variant: currentVariant(cls),
+              label: cls.name
+            });
+            sprite.setAttribute("data-idle-for", cls.id);
+            return [sprite, genderToggle(cls)];
+          })()
         }),
         h("div", {
           class: "class-card__body",
@@ -149,30 +208,16 @@
       children: [
         h("div", {
           class: "class-detail__art",
-          children: [
-            EB.figure(cls.art.fullArt, { eager: true }),
-            h("div", {
-              class: "class-detail__sprite",
-              children: [
-                EB.idleAnimation(cls.art.idle, {
-                  scale: 6,
-                  fallbackSprite: cls.art.sprite,
-                  label: cls.name + " idle animation (placeholder)"
-                }),
-                h("p", {
-                  class: "class-detail__sprite-label",
-                  text:
-                    "Idle · " +
-                    (cls.art.idle.direction || "side") +
-                    " · " +
-                    cls.art.idle.frameSize +
-                    "×" +
-                    cls.art.idle.frameSize +
-                    " source"
-                })
-              ]
-            })
-          ]
+          children: (function () {
+            var sprite = EB.characterIdleSprite(cls.art.idle, {
+              scale: 8,
+              variant: currentVariant(cls),
+              animated: true,
+              label: cls.name + " idle"
+            });
+            sprite.setAttribute("data-idle-for", cls.id);
+            return [sprite, genderToggle(cls)];
+          })()
         }),
         h("div", {
           class: "class-detail__body",
