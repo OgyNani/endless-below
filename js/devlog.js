@@ -245,7 +245,7 @@
                 h("p", { text: entry.summary }),
                 h("a", {
                   class: "btn btn--sm",
-                  attrs: { href: "devlog.html#" + entry.id },
+                  attrs: { href: "/devlog/#" + entry.id },
                   text: "Read more"
                 })
               ]
@@ -279,7 +279,7 @@
     /* Entries are created after main.js' first reveal pass. */
     EB.scanReveal();
 
-    /* Open an entry directly when linked, e.g. devlog.html#building-the-abyss */
+    /* Open an entry directly when linked, e.g. /devlog/#building-the-abyss */
     var hash = (global.location.hash || "").replace("#", "");
     if (hash) {
       var target = global.document.getElementById(hash);

@@ -1,6 +1,9 @@
 # One-shot HTML chrome emitter. Run from the repo root:
 #   python tools/emit-pages.py
 # The site itself has no build step; this only keeps header/footer in sync.
+#
+# Pages live in folders so URLs are /home/, /characters/, /devlog/.
+# Root / redirects to /home/. Asset and script hrefs are root-relative.
 
 from pathlib import Path
 
@@ -18,10 +21,12 @@ SIGIL = """\
           </svg>"""
 
 NAV = [
-    ("index.html", "Home"),
-    ("classes.html", "Characters"),
-    ("devlog.html", "Devlog"),
+    ("/home/", "Home"),
+    ("/characters/", "Characters"),
+    ("/devlog/", "Devlog"),
 ]
+
+LEGACY = ("classes.html", "devlog.html")
 
 
 def nav_html(current):
@@ -33,7 +38,7 @@ def nav_html(current):
 
 
 def page(
-    filename,
+    route,
     title,
     description,
     canonical,
@@ -42,7 +47,6 @@ def page(
     scripts,
     header_solid=True,
 ):
-    current = filename
     solid = " site-header--solid" if header_solid else ""
     script_tags = "\n  ".join(f'<script src="{src}"></script>' for src in scripts)
     return f"""<!DOCTYPE html>
@@ -75,20 +79,20 @@ def page(
   <meta name="twitter:image" content="https://endless-below.com/assets/media/og-image.png">
   <!-- TODO(links): add twitter:site once the account exists -->
 
-  <link rel="icon" href="assets/branding/favicon-32.png" sizes="32x32" type="image/png">
-  <link rel="icon" href="assets/branding/favicon-512.png" sizes="512x512" type="image/png">
-  <link rel="apple-touch-icon" href="assets/branding/apple-touch-icon-180.png">
+  <link rel="icon" href="/assets/branding/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/assets/branding/favicon-512.png" sizes="512x512" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/branding/apple-touch-icon-180.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&display=swap">
 
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages.css">
-  <link rel="stylesheet" href="css/pixel-ui.css">
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <link rel="stylesheet" href="/css/pixel-ui.css">
 </head>
 
 <body>
@@ -104,7 +108,7 @@ def page(
   <div class="page">
     <header class="site-header{solid}">
       <div class="container site-header__inner">
-        <a class="brand" href="index.html">
+        <a class="brand" href="/home/">
 {SIGIL}
           <span class="brand__name">Endless Below</span>
         </a>
@@ -116,7 +120,7 @@ def page(
 
         <nav class="site-nav" id="site-nav" aria-label="Primary">
           <ul class="site-nav__list">
-{nav_html(current)}
+{nav_html(route)}
           </ul>
         </nav>
 
@@ -137,7 +141,7 @@ def page(
       <div class="container">
         <div class="site-footer__grid">
           <div class="site-footer__brand">
-            <a class="brand" href="index.html">
+            <a class="brand" href="/home/">
 {SIGIL}
               <span class="brand__name">Endless Below</span>
             </a>
@@ -159,9 +163,9 @@ def page(
             <div class="footer-col">
               <h4>Site</h4>
               <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="classes.html">Characters</a></li>
-                <li><a href="devlog.html">Devlog</a></li>
+                <li><a href="/home/">Home</a></li>
+                <li><a href="/characters/">Characters</a></li>
+                <li><a href="/devlog/">Devlog</a></li>
               </ul>
             </div>
           </div>
@@ -180,6 +184,119 @@ def page(
 </html>
 """
 
+
+HOME = r"""
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__art" data-parallax="-0.05">
+          <!-- TODO(art): replace this placeholder with the final key art:
+               <img class="hero__img" src="/assets/backgrounds/hero-key-art.webp"
+                    alt="" width="2560" height="1440" fetchpriority="high"> -->
+          <div class="ph" role="img" aria-label="Placeholder: hero key art, 2560 by 1440">
+            <span class="ph__label">Hero Key Art</span>
+            <span class="ph__dims">2560 × 1440 · 16:9 · WebP</span>
+            <span class="ph__note">A city, the Abyss, dark fantasy atmosphere. Subject centred, centre-left kept clear for the title, must crop safely to mobile portrait.</span>
+          </div>
+        </div>
+        <div class="hero__scrim" aria-hidden="true"></div>
+
+        <div class="container hero__inner">
+          <div class="hero__content">
+            <p class="eyebrow">Online action RPG · In development</p>
+
+            <h1 class="hero__title" id="hero-title">
+              <span>Endless</span>
+              <span class="hero__title-below">Below</span>
+            </h1>
+
+            <p class="hero__creed">Descend. Survive. Return changed.</p>
+
+            <p class="hero__desc">ENDLESS BELOW is a dark fantasy online action RPG about dangerous expeditions into an ever-changing Abyss.</p>
+
+            <div class="hero__actions">
+              <!-- TODO(links): replace "#" with the real Steam wishlist URL -->
+              <a class="btn btn--primary" href="#" data-todo="steam-wishlist">Wishlist on Steam</a>
+              <!-- TODO(links): replace "#" with the real Discord invite URL -->
+              <a class="btn" href="#" data-todo="discord-invite">Join Discord</a>
+            </div>
+          </div>
+        </div>
+
+        <a class="hero__scroll" href="#last-city">
+          <span class="hero__scroll-label">Descend</span>
+          <span class="hero__scroll-track" aria-hidden="true">
+            <span class="hero__scroll-hint">
+              <span class="hero__scroll-arrow"></span>
+            </span>
+          </span>
+        </a>
+      </section>
+
+      <section class="section home-premise" id="last-city" aria-labelledby="last-city-title">
+        <div class="container">
+          <div class="split reveal">
+            <div class="home-premise__copy">
+              <p class="eyebrow">The surface</p>
+              <h2 class="section__title" id="last-city-title">The last city above</h2>
+              <p class="section__lead">One city still stands on the surface.</p>
+              <p>Built around the mouth of the Abyss, it survives in a place the depths somehow never claimed.</p>
+              <p>Beyond its walls, almost nothing remains.</p>
+            </div>
+            <div class="home-premise__art frame">
+              <!-- TODO(art): replace with the last-city key art -->
+              <div class="ph ph--16x9" role="img" aria-label="Placeholder: the last city above, 1600 by 900">
+                <span class="ph__label">The Last City Above</span>
+                <span class="ph__dims">1600 × 900 · 16:9 · WebP</span>
+                <span class="ph__note">A surface city around the mouth of the Abyss. Dark. Still standing.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="pixel-divider" aria-hidden="true"></div>
+
+      <section class="section section--sunken home-premise" id="the-abyss" aria-labelledby="abyss-title">
+        <div class="container">
+          <div class="split split--reverse reveal">
+            <div class="home-premise__copy">
+              <p class="eyebrow">The Abyss</p>
+              <h2 class="section__title" id="abyss-title">Everything else lies below</h2>
+              <p class="section__lead">The Abyss is more than darkness beneath the earth.</p>
+              <p>Forests, ruins, seas, lost settlements and places that should not exist can be found somewhere in its depths.</p>
+              <p>No descent promises the same path twice.</p>
+            </div>
+            <div class="home-premise__art frame">
+              <!-- TODO(art): replace with abyss atmosphere art -->
+              <div class="ph ph--16x9" role="img" aria-label="Placeholder: the Abyss below, 1600 by 900">
+                <span class="ph__label">Everything Else Lies Below</span>
+                <span class="ph__dims">1600 × 900 · 16:9 · WebP</span>
+                <span class="ph__note">Depths that should not exist. Forests, ruins, seas, lost places.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="pixel-divider" aria-hidden="true"></div>
+
+      <section class="section" id="latest-devlog" aria-labelledby="devlog-preview-title">
+        <div class="container">
+          <div class="class-preview__head reveal">
+            <div>
+              <p class="eyebrow">Devlog</p>
+              <h2 class="section__title" id="devlog-preview-title">Latest</h2>
+            </div>
+            <a class="btn btn--sm" href="/devlog/">View all devlogs</a>
+          </div>
+
+          <p class="notice no-js-only">
+            <span class="notice__mark">No JavaScript</span>
+            Latest entries need JavaScript. Open the <a href="/devlog/">Devlog</a>.
+          </p>
+          <div class="home-devlog js-only" data-devlog-preview></div>
+        </div>
+      </section>
+"""
 
 CLASSES = r"""
       <header class="page-header">
@@ -271,49 +388,92 @@ NOT_FOUND = r"""
           <h1>This descent has no floor</h1>
           <p class="text-muted">That path does not exist on this site.</p>
           <p style="margin-top: 2rem;">
-            <a class="btn btn--primary" href="index.html">Return to the surface</a>
+            <a class="btn btn--primary" href="/home/">Return to the surface</a>
           </p>
         </div>
       </div>
 """
 
+ROOT_REDIRECT = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ENDLESS BELOW</title>
+  <meta http-equiv="refresh" content="0; url=/home/">
+  <link rel="canonical" href="https://endless-below.com/home/">
+  <script>location.replace("/home/");</script>
+</head>
+<body>
+  <p><a href="/home/">ENDLESS BELOW</a></p>
+</body>
+</html>
+"""
+
 PAGES = [
     {
-        "filename": "classes.html",
+        "out": "home/index.html",
+        "route": "/home/",
+        "title": "ENDLESS BELOW — Dark Fantasy Online Action RPG",
+        "description": "ENDLESS BELOW is a dark fantasy online action RPG about dangerous expeditions into an ever-changing Abyss.",
+        "canonical": "https://endless-below.com/home/",
+        "og_title": "ENDLESS BELOW — Dark Fantasy Online Action RPG",
+        "body": HOME,
+        "scripts": ["/js/main.js", "/data/devlog.js", "/js/devlog.js"],
+        "header_solid": False,
+    },
+    {
+        "out": "characters/index.html",
+        "route": "/characters/",
         "title": "Characters — ENDLESS BELOW",
         "description": "The ten base classes of ENDLESS BELOW.",
-        "canonical": "https://endless-below.com/classes.html",
+        "canonical": "https://endless-below.com/characters/",
         "og_title": "Characters — ENDLESS BELOW",
         "body": CLASSES,
-        "scripts": ["js/main.js", "data/classes.js", "js/classes.js"],
+        "scripts": ["/js/main.js", "/data/classes.js", "/js/classes.js"],
     },
     {
-        "filename": "devlog.html",
+        "out": "devlog/index.html",
+        "route": "/devlog/",
         "title": "Devlog — ENDLESS BELOW",
         "description": "Development updates for ENDLESS BELOW: art, animation, systems, and future patch-style notes.",
-        "canonical": "https://endless-below.com/devlog.html",
+        "canonical": "https://endless-below.com/devlog/",
         "og_title": "Devlog — ENDLESS BELOW",
         "body": DEVLOG,
-        "scripts": ["js/main.js", "data/devlog.js", "js/devlog.js"],
+        "scripts": ["/js/main.js", "/data/devlog.js", "/js/devlog.js"],
     },
     {
-        "filename": "404.html",
+        "out": "404.html",
+        "route": "",
         "title": "Not found — ENDLESS BELOW",
         "description": "That path does not exist on the ENDLESS BELOW site.",
         "canonical": "https://endless-below.com/404.html",
         "og_title": "Not found — ENDLESS BELOW",
         "body": NOT_FOUND,
-        "scripts": ["js/main.js"],
+        "scripts": ["/js/main.js"],
     },
 ]
 
 
 def main():
     for spec in PAGES:
-        html = page(**spec)
-        path = ROOT / spec["filename"]
+        out = spec["out"]
+        args = {k: v for k, v in spec.items() if k != "out"}
+        html = page(**args)
+        path = ROOT / out
+        path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(html, encoding="utf-8", newline="\n")
         print("wrote", path.relative_to(ROOT))
+
+    root_index = ROOT / "index.html"
+    root_index.write_text(ROOT_REDIRECT, encoding="utf-8", newline="\n")
+    print("wrote", root_index.relative_to(ROOT), "(redirect to /home/)")
+
+    for name in LEGACY:
+        legacy = ROOT / name
+        if legacy.exists():
+            legacy.unlink()
+            print("removed", name)
 
 
 if __name__ == "__main__":

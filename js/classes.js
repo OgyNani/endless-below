@@ -2,7 +2,7 @@
    ENDLESS BELOW — class rendering
    --------------------------------------------------------------------------
    Consumes window.EB_DATA.classes and renders:
-     [data-classes="preview"] — home page carousel cards (links to classes.html)
+     [data-classes="preview"] — home page carousel cards (links to /characters/)
      [data-classes="grid"]    — classes page grid (opens a detail modal)
    Adding a class is a data-only change; no markup edits required.
    ========================================================================== */
@@ -55,7 +55,7 @@
     var action = isPreview
       ? h("a", {
           class: "btn btn--sm",
-          attrs: { href: "classes.html#" + cls.id },
+          attrs: { href: "/characters/#" + cls.id },
           children: [
             "View class",
             h("span", { class: "caret", attrs: { "aria-hidden": "true" }, text: "→" })
@@ -273,7 +273,7 @@
         if (hash && findClass(hash)) openDetail(hash);
       }
 
-      /* Deep link support: classes.html#spellblade opens that class. */
+      /* Deep link support: /characters/#spellblade opens that class. */
       openFromHash();
       global.addEventListener("hashchange", openFromHash);
     }
