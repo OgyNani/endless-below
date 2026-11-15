@@ -5,12 +5,12 @@
   DATA.devlog = [
   {
     "id": "base-run-animations",
-    "date": "2026-11-15",
+    "date": "2026-11-03",
     "title": "Base Run Animations",
     "summary": "Run animations for the base model are finally done.",
-    "tag": "Art",
+    "tag": "Animation",
     "tags": [
-      "Art"
+      "Animation"
     ],
     "href": "/devlog/#base-run-animations",
     "bodyHtml": "<p>Every direction is covered now, so we can start moving from the base rig into the actual playable classes.</p>\n<p>Next step: giving all 10 classes their own run animations while keeping the movement consistent.</p>\n<p>After that, we’re jumping straight into basic attacks.</p>\n<h3>Side movement</h3>\n<figure class=\"devlog-media\"><img class=\"devlog-media__img\" src=\"/assets/devlog/2026-11-run-animation/run_side.webp\" alt=\"Side movement\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></figure>\n<h3>Down movement</h3>\n<figure class=\"devlog-media\"><img class=\"devlog-media__img\" src=\"/assets/devlog/2026-11-run-animation/run_down.webp\" alt=\"Down movement\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></figure>\n<h3>Up movement</h3>\n<figure class=\"devlog-media\"><img class=\"devlog-media__img\" src=\"/assets/devlog/2026-11-run-animation/run_up.webp\" alt=\"Up movement\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></figure>",
