@@ -378,9 +378,10 @@ Display type on the site is Cinzel. If a painting includes the title, prefer a s
 
 ## Checklist for a new devlog entry
 
-1. Add `assets/media/devlog/<slug>.webp` at 1600×900.
-2. Prepend an object to `data/devlog.js`. Set `mock: false` only for real history.
-3. Reload.
+1. Create or edit `content/devlog/<slug>.md` (or use `/admin/`).
+2. Put animated WebP/GIF under `assets/devlog/<folder>/` (or upload via the CMS to `assets/devlog/uploads/`).
+3. Run `python tools/build.py` (or push to `main` and let the Rebuild Devlog workflow run).
+4. Do not edit `data/devlog.js` or `devlog/<slug>/index.html` by hand — they are generated.
 
 ## Checklist for a new patch
 

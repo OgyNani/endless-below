@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://endless-below.com/</loc></url>
-  <url><loc>https://endless-below.com/classes.html</loc></url>
-  <url><loc>https://endless-below.com/devlog.html</loc></url>
+  <url><loc>https://endless-below.com/home/</loc></url>
+  <url><loc>https://endless-below.com/characters/</loc></url>
+  <url><loc>https://endless-below.com/devlog/</loc></url>
+  <url><loc>https://endless-below.com/devlog/base-run-animations/</loc></url>
 </urlset>

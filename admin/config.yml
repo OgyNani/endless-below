@@ -1,0 +1,73 @@
+# ENDLESS BELOW — Decap CMS
+#
+# Local (no login):
+#   1. python -m http.server 8099 --bind 127.0.0.1
+#   2. npx decap-server   (or: npm run cms)
+#   3. open http://127.0.0.1:8099/admin/
+#
+# local_backend only activates on localhost / 127.0.0.1, and only when
+# decap-server is running. Production ignores it and uses `backend`.
+#
+# Production: https://endless-below.com/admin/ uses Decap Turbo.
+# Do not set repo here — Turbo's site row is authoritative.
+# Docs: https://decapcms.org/docs/turbo-connecting-a-site/
+
+# Boolean `true` always probes http://localhost:8081. Pin 127.0.0.1 so
+# opening /admin/ on the python server (bound to 127.0.0.1) finds the proxy.
+local_backend:
+  url: http://127.0.0.1:8081/api/v1
+  allowed_hosts:
+    - 127.0.0.1
+    - localhost
+
+backend:
+  name: turbo-github
+  turbo_site_id: 2163819d-583b-4531-9c9e-e72e16cd5c19
+  branch: main
+
+site_url: https://endless-below.com
+display_url: https://endless-below.com
+logo_url: /assets/branding/favicon-32.png
+
+media_folder: assets/devlog/uploads
+public_folder: /assets/devlog/uploads
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: devlog
+    label: Devlog
+    label_singular: Devlog post
+    folder: content/devlog
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    identifier_field: slug
+    preview_path: "devlog/{{slug}}/"
+    summary: "{{title}} — {{date}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Slug, name: slug, widget: string, hint: "URL piece, e.g. base-run-animations" }
+      - {
+          label: Publish date,
+          name: date,
+          widget: datetime,
+          date_format: YYYY-MM-DD,
+          time_format: false,
+          format: YYYY-MM-DD,
+        }
+      - {
+          label: Tag,
+          name: tag,
+          widget: select,
+          options: ["Art", "Animation", "Combat", "Level Design", "Pixel Art", "Systems", "Tools", "World"],
+        }
+      - { label: Summary, name: summary, widget: text }
+      - { label: Cover image, name: cover, widget: image, required: false }
+      - { label: Published, name: published, widget: boolean, default: true }
+      - { label: Body, name: body, widget: markdown }

@@ -1,0 +1,14 @@
+{
+  "name": "endless-below-cms-local",
+  "private": true,
+  "description": "Local-only Decap CMS proxy. The public site stays static HTML.",
+  "scripts": {
+    "cms": "decap-server"
+  },
+  "devDependencies": {
+    "decap-server": "^3.3.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,60 @@
+# Rebuild Devlog pages when Markdown or media changes.
+# Generated HTML/JS is committed so GitHub Pages can keep deploying from main/root.
+#
+# Loop safety:
+# - GITHUB_TOKEN pushes do not start a new workflow run.
+# - Path filters ignore generated output (data/, /devlog pages, sitemap, chrome).
+# - Commit message [skip generated] is an extra guard if a PAT is used later.
+# Do not put [skip ci] on the generated commit: that can skip Pages.
+#
+# If branch protection is later enabled on main, allow github-actions[bot]
+# to push (or bypass for this workflow). GITHUB_TOKEN cannot open a PR by itself.
+
+name: Rebuild Devlog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "content/devlog/**"
+      - "assets/devlog/**"
+      - "tools/**"
+      - ".github/workflows/build-devlog.yml"
+
+concurrency:
+  group: rebuild-devlog-main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: ${{ !contains(github.event.head_commit.message || '', '[skip generated]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate site from content
+        run: python tools/build.py
+
+      - name: Commit generated pages
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/devlog.js devlog sitemap.xml home/index.html 404.html index.html
+          if git diff --staged --quiet; then
+            echo "No generated-file changes"
+            exit 0
+          fi
+          git commit -m "Rebuild Devlog from content [skip generated]"
+          git pull --rebase origin main
+          git push

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Devlog Admin — ENDLESS BELOW</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/assets/branding/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="cms-config-url" type="text/yaml" href="/admin/config.yml">
+</head>
+<body>
+  <!-- Decap CMS 3.17+ includes the Turbo GitHub backend. -->
+  <script src="https://unpkg.com/decap-cms@^3.17.0/dist/decap-cms.js"></script>
+  <script>
+    (function () {
+      var host = location.hostname;
+      if (host !== "127.0.0.1" && host !== "localhost") return;
+
+      function skipDummyLogin() {
+        if (document.querySelector("input[type=email], input[type=password]")) return false;
+        var buttons = document.querySelectorAll("button");
+        for (var i = 0; i < buttons.length; i++) {
+          var label = (buttons[i].textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
+          if (label === "login") {
+            buttons[i].click();
+            return true;
+          }
+        }
+        return false;
+      }
+
+      if (skipDummyLogin()) return;
+      var obs = new MutationObserver(function () {
+        if (skipDummyLogin()) obs.disconnect();
+      });
+      obs.observe(document.documentElement, { childList: true, subtree: true });
+      setTimeout(function () { obs.disconnect(); }, 20000);
+    })();
+  </script>
+</body>
+</html>

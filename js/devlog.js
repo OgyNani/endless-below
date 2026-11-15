@@ -1,9 +1,8 @@
 /* ==========================================================================
-   ENDLESS BELOW — devlog rendering
+   ENDLESS BELOW — devlog index + home preview
    --------------------------------------------------------------------------
-   Consumes window.EB_DATA.devlog. Newest first, tag filtering, expandable
-   article bodies and an optional gallery wired to the shared lightbox.
-   Entries flagged `mock: true` render a visible badge.
+   Consumes window.EB_DATA.devlog generated from content/devlog/*.md.
+   Newest first, tag filtering. Read entry expands the post in place.
    ========================================================================== */
 
 (function (global) {
@@ -16,78 +15,41 @@
   var h = EB.h;
   var activeTag = "all";
 
-  /* Newest first, regardless of authoring order in the data file. */
   entries.sort(function (a, b) {
     return String(b.date).localeCompare(String(a.date));
   });
 
-  /* ---- Article body blocks -------------------------------------------- */
-  function block(b) {
-    switch (b.type) {
-      case "h3":
-        return h("h3", { text: b.text });
-      case "ul":
-        return h("ul", {
-          children: (b.items || []).map(function (item) {
-            return h("li", { text: item });
-          })
-        });
-      case "quote":
-        return h("blockquote", {
-          class: "pullquote",
-          children: [
-            h("p", { text: b.text }),
-            b.cite ? h("cite", { text: b.cite }) : null
-          ]
-        });
-      default:
-        return h("p", { text: b.text });
-    }
+  function entryHref(entry) {
+    return "/devlog/#" + entry.id;
   }
 
-  function gallery(items) {
-    if (!items || !items.length) return null;
-
-    var wrap = h("div", { class: "devlog-gallery" });
-
-    items.forEach(function (item, index) {
-      var btn = h("button", {
-        class: "media-item",
-        attrs: {
-          type: "button",
-          "aria-label": "Open " + (item.title || item.label) + " in viewer"
-        },
-        children: [
-          h("span", { class: "media-item__art", children: EB.figure(item) }),
-          h("span", {
-            class: "media-item__bar",
-            children: [
-              h("span", { class: "media-item__title", text: item.label }),
-              h("span", { class: "media-item__kind", text: item.dims })
-            ]
-          })
-        ]
-      });
-
-      btn.addEventListener("click", function () {
-        EB.lightbox.open(items, index);
-      });
-
-      wrap.appendChild(btn);
-    });
-
-    return wrap;
+  function entryTags(entry) {
+    if (entry.tags && entry.tags.length) return entry.tags;
+    return entry.tag ? [entry.tag] : [];
   }
 
-  /* ---- Entry ----------------------------------------------------------- */
+  function heroSlot(entry) {
+    if (entry.hero) return entry.hero;
+    return {
+      src: entry.cover || null,
+      label: entry.title,
+      alt: entry.title,
+      dims: "cover",
+      ratio: "16x9",
+      pixelArt: false
+    };
+  }
+
+  /* ---- Card ------------------------------------------------------------- */
   function entryNode(entry) {
+    var tags = entryTags(entry);
     var bodyId = "devlog-body-" + entry.id;
 
     var article = h("div", {
       class: "devlog-entry__article prose",
-      attrs: { id: bodyId, hidden: true },
-      children: (entry.body || []).map(block).concat([gallery(entry.gallery)])
+      attrs: { id: bodyId, hidden: true }
     });
+    article.innerHTML = entry.bodyHtml || "";
 
     var toggle = h("button", {
       class: "btn btn--sm",
@@ -120,7 +82,7 @@
           class: "devlog-entry__media",
           children: h("div", {
             class: "art-mount",
-            children: EB.figure(entry.hero)
+            children: EB.figure(heroSlot(entry))
           })
         }),
         h("div", {
@@ -133,18 +95,21 @@
                   attrs: { datetime: entry.date },
                   text: EB.formatDate(entry.date)
                 }),
+                tags.length
+                  ? h("ul", {
+                      class: "tag-list",
+                      children: tags.map(function (tag) {
+                        return h("li", {
+                          children: h("span", { class: "tag", text: tag })
+                        });
+                      })
+                    })
+                  : null,
                 entry.mock ? EB.mockBadge("Mock entry") : null
               ]
             }),
             h("h2", { class: "devlog-entry__title", text: entry.title }),
             h("p", { class: "devlog-entry__summary", text: entry.summary }),
-            h("ul", {
-              class: "tag-list",
-              style: { "margin-top": "1rem" },
-              children: (entry.tags || []).map(function (tag) {
-                return h("li", { children: h("span", { class: "tag", text: tag }) });
-              })
-            }),
             h("div", { class: "devlog-entry__foot", children: toggle })
           ]
         }),
@@ -152,15 +117,15 @@
       ]
     });
 
-    return h("li", { attrs: { "data-tags": (entry.tags || []).join("|") }, children: node });
+    return h("li", { attrs: { "data-tags": tags.join("|") }, children: node });
   }
 
   /* ---- Tag filter ------------------------------------------------------ */
   function uniqueTags() {
     var seen = [];
     entries.forEach(function (entry) {
-      (entry.tags || []).forEach(function (tag) {
-        if (seen.indexOf(tag) === -1) seen.push(tag);
+      entryTags(entry).forEach(function (tag) {
+        if (tag && seen.indexOf(tag) === -1) seen.push(tag);
       });
     });
     return seen.sort();
@@ -229,7 +194,7 @@
         return h("article", {
           class: "home-devlog__card frame reveal",
           children: [
-            EB.figure(entry.hero),
+            EB.figure(heroSlot(entry)),
             h("div", {
               class: "home-devlog__body",
               children: [
@@ -240,6 +205,9 @@
                       attrs: { datetime: entry.date },
                       text: EB.formatDate(entry.date)
                     }),
+                    entry.tag
+                      ? h("span", { class: "tag", text: entry.tag })
+                      : null,
                     entry.mock ? EB.mockBadge("Mock entry") : null
                   ]
                 }),
@@ -247,8 +215,13 @@
                 h("p", { text: entry.summary }),
                 h("a", {
                   class: "btn btn--sm",
-                  attrs: { href: "/devlog/#" + entry.id },
-                  text: "Read more"
+                  attrs: { href: entryHref(entry) },
+                  children: [
+                    h("span", {
+                      class: "btn__label",
+                      children: [h("span", { class: "btn__copy", text: "Read more" })]
+                    })
+                  ]
                 })
               ]
             })
@@ -277,11 +250,8 @@
     list.parentNode.insertBefore(emptyState, list.nextSibling);
 
     filters(list, emptyState);
-
-    /* Entries are created after main.js' first reveal pass. */
     EB.scanReveal();
 
-    /* Open an entry directly when linked, e.g. /devlog/#building-the-abyss */
     var hash = (global.location.hash || "").replace("#", "");
     if (hash) {
       var target = global.document.getElementById(hash);
