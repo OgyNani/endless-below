@@ -23,4 +23,4 @@ After that, we’re jumping straight into basic attacks.
 
 ### Up movement
 
-![Up movement](/assets/devlog/2026-11-run-animation/run_up.webp)
+![Up movement](/assets/devlog/uploads/run_up.webp)
