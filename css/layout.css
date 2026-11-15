@@ -122,8 +122,8 @@
 }
 
 .site-header .brand__sigil {
-  /* Header-only. Footer stays 28px. Bump to 60px here if 56 still feels small. */
-  --header-sigil-size: 56px;
+  /* Header-only. Footer stays 28px. */
+  --header-sigil-size: 64px;
   width: var(--header-sigil-size);
   height: var(--header-sigil-size);
 }
@@ -405,6 +405,10 @@
 @media (max-width: 1240px) {
   :root {
     --header-h: 64px;
+  }
+
+  .site-header .brand__sigil {
+    --header-sigil-size: 60px;
   }
 
   .nav-toggle {
