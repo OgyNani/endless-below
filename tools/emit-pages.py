@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 
-from sitechrome import page  # noqa: E402
+from sitechrome import DISCORD_INVITE, page  # noqa: E402
 from devlog_content import format_date, load_posts  # noqa: E402
 
 LEGACY = ("classes.html", "devlog.html")
@@ -40,8 +40,7 @@ HOME = r"""
             <div class="hero__actions">
               <!-- TODO(links): replace "#" with the real Steam wishlist URL -->
               <a class="btn btn--primary" href="#" data-todo="steam-wishlist">Wishlist on Steam</a>
-              <!-- TODO(links): replace "#" with the real Discord invite URL -->
-              <a class="btn" href="#" data-todo="discord-invite">Join Discord</a>
+              <a class="btn" href="{DISCORD_INVITE}" target="_blank" rel="noopener noreferrer">Join Discord</a>
             </div>
           </div>
         </div>
@@ -104,7 +103,7 @@ HOME = r"""
           <div class="home-devlog js-only" data-devlog-preview></div>
         </div>
       </section>
-"""
+""".replace("{DISCORD_INVITE}", DISCORD_INVITE)
 
 CLASSES = r"""
       <header class="page-header">
@@ -147,12 +146,11 @@ CLASSES = r"""
           <div class="cta-band__actions">
             <!-- TODO(links): replace "#" with the real Steam wishlist URL -->
             <a class="btn btn--primary" href="#" data-todo="steam-wishlist">Wishlist on Steam</a>
-            <!-- TODO(links): replace "#" with the real Discord invite URL -->
-            <a class="btn" href="#" data-todo="discord-invite">Join Discord</a>
+            <a class="btn" href="{DISCORD_INVITE}" target="_blank" rel="noopener noreferrer">Join Discord</a>
           </div>
         </div>
       </section>
-"""
+""".replace("{DISCORD_INVITE}", DISCORD_INVITE)
 
 def _esc(text):
     return (

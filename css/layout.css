@@ -117,6 +117,15 @@
   transition: color var(--dur) var(--ease), transform var(--dur-slow) var(--ease);
 }
 
+.site-header .brand {
+  gap: var(--sp-2);
+}
+
+.site-header .brand__sigil {
+  width: 36px;
+  height: 36px;
+}
+
 .brand:hover .brand__sigil {
   color: var(--cyan);
   transform: rotate(-4deg);

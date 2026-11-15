@@ -18,8 +18,13 @@ STYLESHEETS = (
     "/css/pixel-ui.css",
 )
 
+DISCORD_INVITE = "https://discord.gg/qryMCKrgK9"
+
 SIGIL = """\
           <img class="brand__sigil" src="/assets/branding/icon.png" width="28" height="28" alt="" decoding="async" aria-hidden="true">"""
+
+HEADER_SIGIL = """\
+          <img class="brand__sigil" src="/assets/branding/icon.png" width="36" height="36" alt="" decoding="async" aria-hidden="true">"""
 
 NAV = [
     ("/home/", "Home"),
@@ -110,7 +115,7 @@ def page(
     <header class="site-header{solid}">
       <div class="container site-header__inner">
         <a class="brand" href="/home/">
-{SIGIL}
+{HEADER_SIGIL}
           <span class="brand__name">Endless Below</span>
         </a>
 
@@ -128,8 +133,7 @@ def page(
         <div class="site-header__cta">
           <!-- TODO(links): replace "#" with the real Steam wishlist URL -->
           <a class="btn btn--sm btn--primary" href="#" data-todo="steam-wishlist">Wishlist</a>
-          <!-- TODO(links): replace "#" with the real Discord invite URL -->
-          <a class="btn btn--sm" href="#" data-todo="discord-invite">Discord</a>
+          <a class="btn btn--sm" href="{DISCORD_INVITE}" target="_blank" rel="noopener noreferrer">Discord</a>
         </div>
       </div>
     </header>
@@ -155,7 +159,7 @@ def page(
               <!-- TODO(links): all external destinations are placeholders -->
               <ul>
                 <li><a href="#" data-todo="steam">Steam</a></li>
-                <li><a href="#" data-todo="discord">Discord</a></li>
+                <li><a href="{DISCORD_INVITE}" target="_blank" rel="noopener noreferrer">Discord</a></li>
                 <li><a href="#" data-todo="youtube">YouTube</a></li>
                 <li><a href="#" data-todo="twitter">X / Twitter</a></li>
                 <li><a href="#" data-todo="github">GitHub</a></li>
