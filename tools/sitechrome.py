@@ -24,7 +24,7 @@ SIGIL = """\
           <img class="brand__sigil" src="/assets/branding/icon.png" width="28" height="28" alt="" decoding="async" aria-hidden="true">"""
 
 HEADER_SIGIL = """\
-          <img class="brand__sigil" src="/assets/branding/icon.png" width="36" height="36" alt="" decoding="async" aria-hidden="true">"""
+          <img class="brand__sigil" src="/assets/branding/icon.png" width="48" height="48" alt="" decoding="async" aria-hidden="true">"""
 
 NAV = [
     ("/home/", "Home"),
@@ -114,9 +114,8 @@ def page(
   <div class="page">
     <header class="site-header{solid}">
       <div class="container site-header__inner">
-        <a class="brand" href="/home/">
+        <a class="brand" href="/home/" aria-label="Endless Below">
 {HEADER_SIGIL}
-          <span class="brand__name">Endless Below</span>
         </a>
 
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">

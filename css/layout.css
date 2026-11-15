@@ -118,12 +118,12 @@
 }
 
 .site-header .brand {
-  gap: var(--sp-2);
+  gap: 0;
 }
 
 .site-header .brand__sigil {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
 }
 
 .brand:hover .brand__sigil {
