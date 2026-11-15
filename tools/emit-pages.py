@@ -192,11 +192,16 @@ def devlog_index_body(posts):
             <span class="notice__mark">No JavaScript</span>
             Tag filters need JavaScript. Entries are listed below.
           </p>
-          <ol class="no-js-only">
-{items}
-          </ol>
 
-          <ol class="devlog-list js-only" data-devlog-list></ol>
+          <div class="devlog-layout">
+            <nav class="devlog-archive js-only" aria-label="Devlog archive" data-devlog-archive></nav>
+            <div class="devlog-feed">
+              <ol class="no-js-only">
+{items}
+              </ol>
+              <ol class="devlog-list js-only" data-devlog-list></ol>
+            </div>
+          </div>
         </div>
       </section>
 """
