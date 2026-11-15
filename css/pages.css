@@ -1050,6 +1050,7 @@
 
 .devlog-media {
   margin: var(--sp-6) 0;
+  width: max-content;
   max-width: 100%;
 }
 
@@ -1058,24 +1059,12 @@
   display: block;
   width: calc(var(--native-w, 32) * var(--px-scale) * 1px);
   height: calc(var(--native-h, 32) * var(--px-scale) * 1px);
-  max-width: 100%;
+  max-width: none;
   object-fit: contain;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   image-rendering: pixelated;
   -ms-interpolation-mode: nearest-neighbor;
-}
-
-@supports (width: round(down, 10px, 1px)) {
-  .devlog-media__img {
-    width: round(
-      down,
-      min(100%, calc(var(--native-w, 32) * var(--px-scale) * 1px)),
-      calc(var(--native-w, 32) * 1px)
-    );
-    height: auto;
-    aspect-ratio: var(--native-w, 32) / var(--native-h, 32);
-  }
 }
 
 .devlog-media .ph {
