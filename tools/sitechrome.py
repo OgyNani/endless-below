@@ -19,15 +19,7 @@ STYLESHEETS = (
 )
 
 SIGIL = """\
-          <svg class="brand__sigil" viewBox="0 0 32 32" width="28" height="28" fill="none" aria-hidden="true" focusable="false">
-            <circle cx="16" cy="16" r="13.5" stroke="currentColor" stroke-opacity=".35"/>
-            <circle cx="16" cy="16" r="9.5" stroke="currentColor" stroke-opacity=".18" stroke-dasharray="2 3"/>
-            <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10.5 10.5 16 14l5.5-3.5" stroke-opacity=".9"/>
-              <path d="M10.5 15.5 16 19l5.5-3.5" stroke-opacity=".6"/>
-              <path d="M10.5 20.5 16 24l5.5-3.5" stroke-opacity=".35"/>
-            </g>
-          </svg>"""
+          <img class="brand__sigil" src="/assets/branding/icon.png" width="28" height="28" alt="" decoding="async" aria-hidden="true">"""
 
 NAV = [
     ("/home/", "Home"),
@@ -93,7 +85,7 @@ def page(
   <meta name="twitter:image" content="https://endless-below.com/assets/media/og-image.png">
   <!-- TODO(links): add twitter:site once the account exists -->
 
-  <link rel="icon" href="/assets/branding/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/assets/branding/icon.png" type="image/png">
   <link rel="icon" href="/assets/branding/favicon-512.png" sizes="512x512" type="image/png">
   <link rel="apple-touch-icon" href="/assets/branding/apple-touch-icon-180.png">
 

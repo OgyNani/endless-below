@@ -1,0 +1,65 @@
+# One-time / retry path for historical published Devlog posts.
+# Does not run on push. Trigger from Actions → Backfill Devlog to Discord.
+# Already-sent slugs in data/discord-devlog-sent.json are skipped.
+
+name: Backfill Devlog to Discord
+
+on:
+  workflow_dispatch:
+    inputs:
+      backfill_existing_posts:
+        description: "Send Discord notifications for published posts that have not been announced yet (oldest first). Already-sent slugs are skipped."
+        type: boolean
+        default: false
+
+concurrency:
+  group: discord-devlog
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  skipped:
+    if: ${{ github.event.inputs.backfill_existing_posts != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Backfill was not enabled
+        run: |
+          echo "Re-run this workflow and check backfill_existing_posts."
+          echo "Nothing was sent."
+          exit 1
+
+  backfill:
+    if: ${{ github.event.inputs.backfill_existing_posts == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Send unpublished-to-Discord published posts
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python tools/discord_devlog.py --mode backfill --send
+
+      - name: Record sent slugs
+        if: ${{ always() }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/discord-devlog-sent.json
+          if git diff --staged --quiet; then
+            echo "No sent-state changes"
+            exit 0
+          fi
+          git commit -m "Record Discord Devlog notifications [skip generated]"
+          git pull --rebase origin main
+          git push

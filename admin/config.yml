@@ -27,7 +27,7 @@ backend:
 
 site_url: https://endless-below.com
 display_url: https://endless-below.com
-logo_url: /assets/branding/favicon-32.png
+logo_url: /assets/branding/icon.png
 
 media_folder: assets/devlog/uploads
 public_folder: /assets/devlog/uploads

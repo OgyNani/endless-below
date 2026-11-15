@@ -136,7 +136,6 @@ $branding = Join-Path $root 'assets/branding'
 New-Item -ItemType Directory -Force -Path $branding | Out-Null
 New-Icon 512 (Join-Path $branding 'favicon-512.png')
 New-Icon 180 (Join-Path $branding 'apple-touch-icon-180.png')
-New-Icon 32 (Join-Path $branding 'favicon-32.png')
 
 # --- OpenGraph placeholder ----------------------------------------------------
 $mediaDir = Join-Path $root 'assets/media'

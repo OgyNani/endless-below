@@ -109,6 +109,10 @@
 .brand__sigil {
   width: 28px;
   height: 28px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
   color: var(--parchment-300);
   transition: color var(--dur) var(--ease), transform var(--dur-slow) var(--ease);
 }

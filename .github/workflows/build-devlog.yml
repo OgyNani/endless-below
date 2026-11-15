@@ -9,6 +9,9 @@
 #
 # If branch protection is later enabled on main, allow github-actions[bot]
 # to push (or bypass for this workflow). GITHUB_TOKEN cannot open a PR by itself.
+#
+# Discord: only AFTER generated files are on main, and only for Markdown files
+# newly added in the triggering commit with published: true.
 
 name: Rebuild Devlog
 
@@ -58,5 +61,56 @@ jobs:
             exit 0
           fi
           git commit -m "Rebuild Devlog from content [skip generated]"
+          git pull --rebase origin main
+          git push
+
+  notify:
+    needs: build
+    if: ${{ !contains(github.event.head_commit.message || '', '[skip generated]') }}
+    runs-on: ubuntu-latest
+    concurrency:
+      group: discord-devlog
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Notify Discord of newly added published posts
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+          BEFORE="${{ github.event.before }}"
+          SHA="${{ github.sha }}"
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            git diff-tree --no-commit-id --name-only --diff-filter=A -r "$SHA" -- content/devlog \
+              > "$RUNNER_TEMP/new-devlog.txt" || true
+          else
+            git diff --diff-filter=A --name-only "$BEFORE" "$SHA" -- content/devlog \
+              > "$RUNNER_TEMP/new-devlog.txt" || true
+          fi
+          echo "Newly added paths:"
+          cat "$RUNNER_TEMP/new-devlog.txt" || true
+          python tools/discord_devlog.py --mode new --from-list "$RUNNER_TEMP/new-devlog.txt" --send
+
+      - name: Record sent slugs
+        if: ${{ always() }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/discord-devlog-sent.json
+          if git diff --staged --quiet; then
+            echo "No sent-state changes"
+            exit 0
+          fi
+          git commit -m "Record Discord Devlog notifications [skip generated]"
           git pull --rebase origin main
           git push
