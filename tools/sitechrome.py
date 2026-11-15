@@ -1,9 +1,22 @@
 # Shared page chrome for emit-pages.py and build-devlog.py.
 # Keep this ASCII-safe: Windows consoles may be cp1251.
 
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+
+from asset_version import versioned  # noqa: E402
+
+STYLESHEETS = (
+    "/css/variables.css",
+    "/css/base.css",
+    "/css/layout.css",
+    "/css/components.css",
+    "/css/pages.css",
+    "/css/pixel-ui.css",
+)
 
 SIGIL = """\
           <svg class="brand__sigil" viewBox="0 0 32 32" width="28" height="28" fill="none" aria-hidden="true" focusable="false">
@@ -44,7 +57,12 @@ def page(
     header_solid=True,
 ):
     solid = " site-header--solid" if header_solid else ""
-    script_tags = "\n  ".join(f'<script src="{src}"></script>' for src in scripts)
+    css_tags = "\n  ".join(
+        f'<link rel="stylesheet" href="{versioned(href)}">' for href in STYLESHEETS
+    )
+    script_tags = "\n  ".join(
+        f'<script src="{versioned(src)}"></script>' for src in scripts
+    )
     return f"""<!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
@@ -83,12 +101,7 @@ def page(
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&display=swap">
 
-  <link rel="stylesheet" href="/css/variables.css">
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/layout.css">
-  <link rel="stylesheet" href="/css/components.css">
-  <link rel="stylesheet" href="/css/pages.css?v=5">
-  <link rel="stylesheet" href="/css/pixel-ui.css">
+  {css_tags}
 </head>
 
 <body>

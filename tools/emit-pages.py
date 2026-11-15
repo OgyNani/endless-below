@@ -239,7 +239,7 @@ PAGES = [
         "canonical": "https://endless-below.com/home/",
         "og_title": "ENDLESS BELOW — Dark Fantasy Online Action RPG",
         "body": HOME,
-        "scripts": ["/js/main.js?v=5", "/data/devlog.js?v=5", "/js/devlog.js?v=5"],
+        "scripts": ["/js/main.js", "/data/devlog.js", "/js/devlog.js"],
         "header_solid": False,
     },
     {
@@ -260,7 +260,7 @@ PAGES = [
         "canonical": "https://endless-below.com/devlog/",
         "og_title": "Devlog — ENDLESS BELOW",
         "body": None,
-        "scripts": ["/js/main.js?v=5", "/data/devlog.js?v=5", "/js/devlog.js?v=5"],
+        "scripts": ["/js/main.js", "/data/devlog.js", "/js/devlog.js"],
     },
     {
         "out": "404.html",

@@ -10,8 +10,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main() -> None:
     py = sys.executable
-    subprocess.check_call([py, str(ROOT / "tools" / "emit-pages.py")])
+    # Write data/devlog.js before HTML so cache-bust hashes match the new file.
     subprocess.check_call([py, str(ROOT / "tools" / "build-devlog.py")])
+    subprocess.check_call([py, str(ROOT / "tools" / "emit-pages.py")])
 
 
 if __name__ == "__main__":

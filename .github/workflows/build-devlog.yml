@@ -18,6 +18,8 @@ on:
     paths:
       - "content/devlog/**"
       - "assets/devlog/**"
+      - "css/**"
+      - "js/**"
       - "tools/**"
       - ".github/workflows/build-devlog.yml"
 

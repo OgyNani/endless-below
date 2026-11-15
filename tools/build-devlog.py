@@ -69,7 +69,7 @@ def write_post_page(post: dict) -> Path:
         canonical=f"https://endless-below.com/devlog/{post['slug']}/",
         og_title=f"{post['title']} — ENDLESS BELOW",
         body=post_body(post),
-        scripts=["/js/main.js?v=4"],
+        scripts=["/js/main.js"],
         header_solid=True,
     )
     path = out_dir / "index.html"
