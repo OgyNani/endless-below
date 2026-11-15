@@ -4,7 +4,7 @@ slug: bard-run-animations
 date: 2026-11-05
 tag: Animation
 summary: Bard movement is finally in.
-cover: /assets/devlog/uploads/cover.png
+cover: /assets/devlog/uploads/bard-cover.png
 published: true
 ---
 Both male and female versions now have their full run cycle in every direction.
