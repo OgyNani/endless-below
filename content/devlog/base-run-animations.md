@@ -4,7 +4,7 @@ slug: base-run-animations
 date: 2026-11-15
 tag: Art
 summary: Run animations for the base model are finally done.
-cover: /assets/devlog/uploads/cover-base.png
+cover: /assets/devlog/uploads/_2026-11-15_211140778.png
 published: true
 ---
 Every direction is covered now, so we can start moving from the base rig into the actual playable classes.
