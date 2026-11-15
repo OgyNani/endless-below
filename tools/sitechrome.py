@@ -24,7 +24,7 @@ SIGIL = """\
           <img class="brand__sigil" src="/assets/branding/icon.png" width="28" height="28" alt="" decoding="async" aria-hidden="true">"""
 
 HEADER_SIGIL = """\
-          <img class="brand__sigil" src="/assets/branding/icon.png" width="48" height="48" alt="" decoding="async" aria-hidden="true">"""
+          <img class="brand__sigil" src="/assets/branding/icon.png" width="56" height="56" alt="" decoding="async" aria-hidden="true">"""
 
 NAV = [
     ("/home/", "Home"),

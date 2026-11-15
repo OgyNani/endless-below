@@ -122,8 +122,10 @@
 }
 
 .site-header .brand__sigil {
-  width: 48px;
-  height: 48px;
+  /* Header-only. Footer stays 28px. Bump to 60px here if 56 still feels small. */
+  --header-sigil-size: 56px;
+  width: var(--header-sigil-size);
+  height: var(--header-sigil-size);
 }
 
 .brand:hover .brand__sigil {
