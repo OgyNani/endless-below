@@ -4,6 +4,27 @@
   var DATA = (global.EB_DATA = global.EB_DATA || {});
   DATA.devlog = [
   {
+    "id": "archer-run-animations",
+    "date": "2026-11-04",
+    "title": "Archer Run Animations",
+    "summary": "Archer movement is finally in.",
+    "tag": "Animation",
+    "tags": [
+      "Animation"
+    ],
+    "href": "/devlog/#archer-run-animations",
+    "bodyHtml": "<p>Both male and female versions now have their full run cycle in every direction.</p>\n<p>It’s a small step, but seeing the class actually move around already makes everything feel much more alive.</p>\n<h3>Side movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/archer-f-run-side.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/archer-m-run-side.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>\n<h3>Down movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/archer-f-run-down.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/archer-m-run-down.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>\n<h3>Up movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/archer-f-run-up.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/archer-m-run-up.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>",
+    "mock": false,
+    "hero": {
+      "src": "/assets/devlog/uploads/cover-archer-run.png",
+      "label": "Archer Run Animations",
+      "alt": "Archer Run Animations",
+      "dims": "cover",
+      "ratio": "16x9",
+      "pixelArt": false
+    }
+  },
+  {
     "id": "base-run-animations",
     "date": "2026-11-03",
     "title": "Base Run Animations",
