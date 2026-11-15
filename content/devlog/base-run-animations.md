@@ -3,19 +3,15 @@ title: Base Run Animations
 slug: base-run-animations
 date: 2026-11-15
 tag: Art
-summary: Run animations for the base character model are now in progress.
+summary: Run animations for the base model are finally done.
 cover: /assets/devlog/uploads/cover-base.png
 published: true
 ---
-Run animations for the base model are finally done.
-
 Every direction is covered now, so we can start moving from the base rig into the actual playable classes.
 
 Next step: giving all 10 classes their own run animations while keeping the movement consistent.
 
 After that, we’re jumping straight into basic attacks.
-
-
 
 ### Side movement
 
