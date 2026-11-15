@@ -70,4 +70,9 @@ collections:
       - { label: Summary, name: summary, widget: text }
       - { label: Cover image, name: cover, widget: image, required: false }
       - { label: Published, name: published, widget: boolean, default: true }
-      - { label: Body, name: body, widget: markdown }
+      - {
+          label: Body,
+          name: body,
+          widget: markdown,
+          editor_components: [image, animation-pair, code-block],
+        }

@@ -21,6 +21,19 @@ _IMG_RE = re.compile(
 )
 _LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 _HEADING_RE = re.compile(r"^(#{1,3})\s+(.+)$")
+_PAIR_RE = re.compile(
+    r"^:::animation-pair[ \t]*\n(.*?)\n:::[ \t]*$",
+    re.MULTILINE | re.DOTALL,
+)
+_PAIR_KEYS = (
+    "title",
+    "left",
+    "left_label",
+    "left_alt",
+    "right",
+    "right_label",
+    "right_alt",
+)
 
 
 def format_date(iso: str) -> str:
@@ -120,9 +133,8 @@ def _linkify(text: str) -> str:
     return "".join(out)
 
 
-def _figure_html(src: str, alt: str, caption: str | None) -> str:
+def _img_html(src: str, alt: str) -> str:
     alt_e = html.escape(alt)
-    cap_e = html.escape(caption) if caption else ""
     path = media_path(src)
     if path:
         size_attrs = ""
@@ -132,29 +144,84 @@ def _figure_html(src: str, alt: str, caption: str | None) -> str:
                 f' width="{canvas[0]}" height="{canvas[1]}" '
                 f'style="--native-w:{canvas[0]};--native-h:{canvas[1]}"'
             )
-        img = (
+        return (
             f'<img class="devlog-media__img" src="{html.escape(src, quote=True)}" '
             f'alt="{alt_e}" loading="lazy" decoding="async"{size_attrs}>'
         )
-    else:
-        label = alt_e or "Artwork pending"
-        img = (
-            f'<div class="ph ph--16x9" role="img" '
-            f'aria-label="Placeholder: {label}">'
-            f'<span class="ph__label">{label}</span>'
-            f'<span class="ph__dims">animated WebP</span></div>'
-        )
+    label = alt_e or "Artwork pending"
+    return (
+        f'<div class="ph ph--16x9" role="img" '
+        f'aria-label="Placeholder: {label}">'
+        f'<span class="ph__label">{label}</span>'
+        f'<span class="ph__dims">animated WebP</span></div>'
+    )
+
+
+def _figure_html(src: str, alt: str, caption: str | None) -> str:
+    cap_e = html.escape(caption) if caption else ""
     cap = f"<figcaption>{cap_e}</figcaption>" if cap_e else ""
-    return f'<figure class="devlog-media">{img}{cap}</figure>'
+    return f'<figure class="devlog-media">{_img_html(src, alt)}{cap}</figure>'
+
+
+def _parse_pair_fields(block: str) -> dict[str, str]:
+    data = {key: "" for key in _PAIR_KEYS}
+    for line in block.splitlines():
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        key = key.strip()
+        if key in data:
+            data[key] = value.strip()
+    return data
+
+
+def _pair_cell_html(src: str, alt: str, label: str) -> str:
+    cap = ""
+    if label:
+        cap = f'<figcaption class="devlog-pair__label">{html.escape(label)}</figcaption>'
+    return (
+        f'<figure class="devlog-pair__cell">'
+        f'<div class="devlog-pair__stage">{_img_html(src, alt)}</div>'
+        f"{cap}</figure>"
+    )
+
+
+def _pair_html(block: str) -> str:
+    data = _parse_pair_fields(block)
+    title = data["title"]
+    heading = (
+        f'<h3 class="devlog-pair__title">{html.escape(title)}</h3>' if title else ""
+    )
+    left_alt = data["left_alt"] or data["left_label"] or "Left animation"
+    right_alt = data["right_alt"] or data["right_label"] or "Right animation"
+    return (
+        f'<section class="devlog-pair">'
+        f"{heading}"
+        f'<div class="devlog-pair__grid">'
+        f'{_pair_cell_html(data["left"], left_alt, data["left_label"])}'
+        f'{_pair_cell_html(data["right"], right_alt, data["right_label"])}'
+        f"</div></section>"
+    )
 
 
 def markdown_to_html(body: str) -> str:
-    """Subset: headings, paragraphs, images, links. Images become figures."""
-    blocks = re.split(r"\n\s*\n", body.strip())
+    """Subset: headings, paragraphs, images, links, animation-pair blocks."""
+    placeholders: list[str] = []
+
+    def stash_pair(match: re.Match[str]) -> str:
+        placeholders.append(_pair_html(match.group(1)))
+        return f"\n\n@@DEVLOGPAIR{len(placeholders) - 1}@@\n\n"
+
+    prepared = _PAIR_RE.sub(stash_pair, body.strip())
+    blocks = re.split(r"\n\s*\n", prepared)
     html_blocks = []
     for block in blocks:
         block = block.strip()
         if not block:
+            continue
+        token = re.fullmatch(r"@@DEVLOGPAIR(\d+)@@", block)
+        if token:
+            html_blocks.append(placeholders[int(token.group(1))])
             continue
         heading = _HEADING_RE.match(block)
         if heading and "\n" not in block:
