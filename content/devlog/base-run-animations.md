@@ -1,8 +1,8 @@
 ---
 title: Base Run Animations
 slug: base-run-animations
-date: 2026-11-15
-tag: Art
+date: 2026-11-03
+tag: Animation
 summary: Run animations for the base model are finally done.
 cover: /assets/devlog/uploads/_2026-11-15_211140778.png
 published: true
