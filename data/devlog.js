@@ -4,6 +4,27 @@
   var DATA = (global.EB_DATA = global.EB_DATA || {});
   DATA.devlog = [
   {
+    "id": "first-video-in-progress",
+    "date": "2026-11-15",
+    "title": "Our First Video Is in the Works",
+    "summary": "We’re putting together the first ENDLESS BELOW video.",
+    "tag": "Art",
+    "tags": [
+      "Art"
+    ],
+    "href": "/devlog/#first-video-in-progress",
+    "bodyHtml": "<p>It’ll be a simple introduction to who we are, what we’re building, and what ENDLESS BELOW is about.</p>\n<p>The video itself will be focused on the story behind the project, with footage of the character art and animation process running in the background.</p>\n<p>Nothing huge yet - just the first proper introduction to the project.</p>\n<p>More soon.</p>",
+    "mock": false,
+    "hero": {
+      "src": "/assets/devlog/uploads/first_vid.png",
+      "label": "Our First Video Is in the Works",
+      "alt": "Our First Video Is in the Works",
+      "dims": "cover",
+      "ratio": "16x9",
+      "pixelArt": false
+    }
+  },
+  {
     "id": "paladin-run-animations",
     "date": "2026-11-13",
     "title": "Paladin Run Animations",
