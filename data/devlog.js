@@ -4,6 +4,27 @@
   var DATA = (global.EB_DATA = global.EB_DATA || {});
   DATA.devlog = [
   {
+    "id": "paladin-run-animations",
+    "date": "2026-11-13",
+    "title": "Paladin Run Animations",
+    "summary": "Paladin movement is finally in.",
+    "tag": "Animation",
+    "tags": [
+      "Animation"
+    ],
+    "href": "/devlog/#paladin-run-animations",
+    "bodyHtml": "<p>Both male and female versions now have their full run cycle in every direction.</p>\n<p>The heavier armor and stronger silhouette already give the Paladin a much more grounded feel in motion.</p>\n<p>Next: more classes, then basic attacks.</p>\n<h3>Side movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/paladin-f-run-side.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/paladin-m-run-side.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>\n<h3>Down movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/paladin-f-run-down.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/paladin-m-run-down.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>\n<h3>Up movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/paladin-f-run-up.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/paladin-m-run-up.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>",
+    "mock": false,
+    "hero": {
+      "src": "/assets/devlog/uploads/paladin-cover.png",
+      "label": "Paladin Run Animations",
+      "alt": "Paladin Run Animations",
+      "dims": "cover",
+      "ratio": "16x9",
+      "pixelArt": false
+    }
+  },
+  {
     "id": "mage-run-animations",
     "date": "2026-11-06",
     "title": "Mage Run Animations",
