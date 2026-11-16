@@ -17,6 +17,10 @@ import discord_devlog as dd  # noqa: E402
 from devlog_content import load_posts  # noqa: E402
 
 
+def _cover_ready(_url: str) -> bool:
+    return True
+
+
 def _post(**overrides) -> dict:
     base = {
         "slug": "mage-run-animations",
@@ -97,6 +101,7 @@ class DiscordDevlogTests(unittest.TestCase):
             send=True,
             delay=0,
             sender=lambda url, payload: None,
+            cover_waiter=_cover_ready,
         )
         self.assertEqual(sent_now, ["mage-run-animations"])
         self.assertEqual(failed, [])
@@ -145,6 +150,7 @@ class DiscordDevlogTests(unittest.TestCase):
             send=True,
             delay=0,
             sender=sender,
+            cover_waiter=_cover_ready,
         )
         self.assertEqual(sent_now, ["a-post", "b-post"])
         self.assertEqual(calls, ["a-post", "b-post"])
@@ -162,6 +168,7 @@ class DiscordDevlogTests(unittest.TestCase):
                 "barbarian-run-animations",
                 "bard-run-animations",
                 "mage-run-animations",
+                "paladin-run-animations",
             ],
         )
         dd.save_sent(["base-run-animations"], self.sent_path)
@@ -177,6 +184,7 @@ class DiscordDevlogTests(unittest.TestCase):
             send=True,
             delay=0,
             sender=sender,
+            cover_waiter=_cover_ready,
         )
         self.assertEqual(failed, [])
         self.assertEqual(
@@ -186,6 +194,7 @@ class DiscordDevlogTests(unittest.TestCase):
                 "barbarian-run-animations",
                 "bard-run-animations",
                 "mage-run-animations",
+                "paladin-run-animations",
             ],
         )
         self.assertEqual(calls, sent_now)
@@ -220,6 +229,7 @@ class DiscordDevlogTests(unittest.TestCase):
                 send=True,
                 delay=0,
                 sender=sender,
+                cover_waiter=_cover_ready,
             )
         self.assertEqual(dd.load_sent(self.sent_path), ["mage-run-animations"])
 
@@ -271,7 +281,7 @@ class DiscordDevlogTests(unittest.TestCase):
         posts = load_posts(published_only=True)
         slugs = {p["slug"] for p in posts}
         self.assertTrue(all(p["published"] for p in posts))
-        self.assertEqual(len(posts), 5)
+        self.assertEqual(len(posts), 6)
         self.assertEqual(
             slugs,
             {
@@ -280,8 +290,148 @@ class DiscordDevlogTests(unittest.TestCase):
                 "barbarian-run-animations",
                 "bard-run-animations",
                 "mage-run-animations",
+                "paladin-run-animations",
             },
         )
+
+    def test_cover_available_immediately_keeps_image(self) -> None:
+        probes: list[str] = []
+        captured: list[dict] = []
+
+        def waiter(url: str) -> bool:
+            probes.append(url)
+            return True
+
+        def sender(_url, payload):
+            captured.append(json.loads(json.dumps(payload)))
+
+        expected = dd.build_payload(_post())
+        dd.notify_posts(
+            [_post()],
+            webhook_url="https://example.invalid/webhook",
+            sent_path=self.sent_path,
+            send=True,
+            delay=0,
+            sender=sender,
+            cover_waiter=waiter,
+        )
+        self.assertEqual(probes, [
+            "https://endless-below.com/assets/devlog/uploads/mage-cover.png"
+        ])
+        self.assertEqual(captured[0]["embeds"][0]["image"], expected["embeds"][0]["image"])
+        self.assertEqual(captured[0]["username"], expected["username"])
+        self.assertEqual(captured[0]["embeds"][0]["title"], expected["embeds"][0]["title"])
+        self.assertEqual(captured[0]["embeds"][0]["description"], expected["embeds"][0]["description"])
+        self.assertEqual(captured[0]["embeds"][0]["fields"], expected["embeds"][0]["fields"])
+        self.assertEqual(dd.load_sent(self.sent_path), ["mage-run-animations"])
+
+    def test_cover_becomes_available_after_retries(self) -> None:
+        probes = {"n": 0}
+        sleeps: list[float] = []
+
+        def prober(_url: str):
+            probes["n"] += 1
+            if probes["n"] < 3:
+                return False, "HTTP 404"
+            return True, "HTTP 200"
+
+        ready = dd.wait_for_public_cover(
+            "https://endless-below.com/assets/devlog/uploads/mage-cover.png",
+            interval=5,
+            timeout=90,
+            sleeper=sleeps.append,
+            prober=prober,
+        )
+        self.assertTrue(ready)
+        self.assertEqual(probes["n"], 3)
+        self.assertEqual(sleeps, [5, 5])
+
+    def test_cover_timeout_sends_without_image(self) -> None:
+        captured: list[dict] = []
+
+        def sender(_url, payload):
+            captured.append(json.loads(json.dumps(payload)))
+
+        sent_now, failed = dd.notify_posts(
+            [_post()],
+            webhook_url="https://example.invalid/webhook",
+            sent_path=self.sent_path,
+            send=True,
+            delay=0,
+            sender=sender,
+            cover_waiter=lambda _url: False,
+        )
+        self.assertEqual(sent_now, ["mage-run-animations"])
+        self.assertEqual(failed, [])
+        self.assertNotIn("image", captured[0]["embeds"][0])
+        self.assertEqual(captured[0]["embeds"][0]["title"], "Mage Run Animations")
+        self.assertEqual(dd.load_sent(self.sent_path), ["mage-run-animations"])
+
+    def test_no_cover_post_sends_immediately_without_waiting(self) -> None:
+        waiter_calls: list[str] = []
+        captured: list[dict] = []
+
+        def waiter(url: str) -> bool:
+            waiter_calls.append(url)
+            raise AssertionError("no-cover posts must not wait")
+
+        def sender(_url, payload):
+            captured.append(payload)
+
+        sent_now, failed = dd.notify_posts(
+            [_post(cover=None)],
+            webhook_url="https://example.invalid/webhook",
+            sent_path=self.sent_path,
+            send=True,
+            delay=0,
+            sender=sender,
+            cover_waiter=waiter,
+        )
+        self.assertEqual(waiter_calls, [])
+        self.assertEqual(sent_now, ["mage-run-animations"])
+        self.assertEqual(failed, [])
+        self.assertNotIn("image", captured[0]["embeds"][0])
+
+    def test_dry_run_does_not_wait_for_cover(self) -> None:
+        def waiter(_url: str) -> bool:
+            raise AssertionError("dry-run must not probe cover URLs")
+
+        sent_now, failed = dd.notify_posts(
+            [_post()],
+            webhook_url="https://example.invalid/webhook",
+            sent_path=self.sent_path,
+            send=False,
+            delay=0,
+            sender=lambda url, payload: (_ for _ in ()).throw(AssertionError("dry-run sent")),
+            cover_waiter=waiter,
+        )
+        self.assertEqual(sent_now, [])
+        self.assertEqual(failed, [])
+
+    def test_probe_head_405_falls_back_to_get(self) -> None:
+        methods: list[str] = []
+
+        def status(_url: str, method: str, timeout: float = 10) -> int:
+            methods.append(method)
+            return 405 if method == "HEAD" else 200
+
+        with mock.patch.object(dd, "_http_status", side_effect=status):
+            ready, detail = dd.probe_cover_url("https://endless-below.com/x.png")
+        self.assertTrue(ready)
+        self.assertEqual(methods, ["HEAD", "GET"])
+        self.assertIn("200", detail)
+
+    def test_wait_cover_timeout_does_not_sleep_past_deadline(self) -> None:
+        sleeps: list[float] = []
+        ready = dd.wait_for_public_cover(
+            "https://endless-below.com/missing.png",
+            interval=5,
+            timeout=0,
+            sleeper=sleeps.append,
+            prober=lambda _url: (False, "HTTP 404"),
+        )
+        self.assertFalse(ready)
+        self.assertEqual(sleeps, [])
 
 
 if __name__ == "__main__":

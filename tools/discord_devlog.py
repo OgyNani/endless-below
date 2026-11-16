@@ -29,6 +29,9 @@ EMBED_COLOR = 0xC6A86A  # restrained warm gold
 WEBHOOK_USERNAME = "ENDLESS BELOW"
 AVATAR_PATH = "/assets/branding/icon.png"
 SEND_GAP_SEC = 0.8
+COVER_READY_INTERVAL_SEC = 5
+COVER_READY_TIMEOUT_SEC = 90
+COVER_PROBE_TIMEOUT_SEC = 10
 _WEBHOOK_RE = re.compile(
     r"https://(?:www\.)?(?:discord|discordapp)\.com/api/webhooks/\S+",
     re.IGNORECASE,
@@ -90,6 +93,76 @@ def public_cover_url(cover: str | None) -> str | None:
     if media_exists(value):
         return url
     return None
+
+
+def _http_status(url: str, method: str, timeout: float = COVER_PROBE_TIMEOUT_SEC) -> int:
+    headers = {"User-Agent": "endless-below-devlog"}
+    if method == "GET":
+        headers["Range"] = "bytes=0-0"
+    request = urllib.request.Request(url, method=method, headers=headers)
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            return int(response.status)
+    except urllib.error.HTTPError as exc:
+        return int(exc.code)
+
+
+def probe_cover_url(url: str, timeout: float = COVER_PROBE_TIMEOUT_SEC) -> tuple[bool, str]:
+    """Lightweight public-URL check. HEAD first, GET if HEAD is unsupported."""
+    try:
+        status = _http_status(url, "HEAD", timeout=timeout)
+        if status in (200, 206):
+            return True, f"HTTP {status}"
+        if status in (405, 501):
+            status = _http_status(url, "GET", timeout=timeout)
+            if status in (200, 206):
+                return True, f"HTTP {status}"
+        return False, f"HTTP {status}"
+    except urllib.error.URLError as exc:
+        try:
+            status = _http_status(url, "GET", timeout=timeout)
+            if status in (200, 206):
+                return True, f"HTTP {status}"
+            return False, f"HTTP {status}"
+        except Exception as nested:
+            return False, redact(str(nested) or str(exc.reason))
+    except Exception as exc:
+        return False, redact(str(exc))
+
+
+def wait_for_public_cover(
+    url: str,
+    *,
+    interval: float = COVER_READY_INTERVAL_SEC,
+    timeout: float = COVER_READY_TIMEOUT_SEC,
+    sleeper=time.sleep,
+    prober=probe_cover_url,
+) -> bool:
+    """Retry until the public cover URL returns 200/206, or the timeout expires."""
+    deadline = time.monotonic() + timeout
+    started = time.monotonic()
+    attempt = 0
+    last_detail = "unreachable"
+    while True:
+        attempt += 1
+        ready, last_detail = prober(url)
+        elapsed = time.monotonic() - started
+        if ready:
+            print(f"cover ready {url} ({last_detail}, attempt {attempt})")
+            return True
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            print(
+                f"warning: cover not live after {timeout:.0f}s {url} "
+                f"({last_detail}, {attempt} attempt(s)); sending without cover"
+            )
+            return False
+        wait = min(interval, remaining)
+        print(
+            f"cover not live yet {url} ({last_detail}); "
+            f"retry in {wait:.0f}s ({elapsed:.0f}s elapsed, {timeout:.0f}s max)"
+        )
+        sleeper(wait)
 
 
 def is_devlog_markdown(path: str | Path) -> bool:
@@ -268,6 +341,7 @@ def notify_posts(
     send: bool = False,
     delay: float = SEND_GAP_SEC,
     sender=send_embed,
+    cover_waiter=wait_for_public_cover,
 ) -> tuple[list[str], list[str]]:
     """Send unsent posts. Returns (sent_now, failed_slugs)."""
     if not posts:
@@ -290,6 +364,11 @@ def notify_posts(
         print(f"{'send' if send else 'dry-run'} {slug} ({post['title']})")
         if not send:
             continue
+        embed = payload["embeds"][0]
+        image_url = (embed.get("image") or {}).get("url")
+        if image_url:
+            if not cover_waiter(image_url):
+                embed.pop("image", None)
         try:
             sender(webhook_url, payload)
         except DiscordNotifyError as exc:
