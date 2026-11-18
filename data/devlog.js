@@ -4,6 +4,27 @@
   var DATA = (global.EB_DATA = global.EB_DATA || {});
   DATA.devlog = [
   {
+    "id": "priest-run-animations",
+    "date": "2026-11-17",
+    "title": "Priest Run Animations",
+    "summary": "Priest movement is finally in.",
+    "tag": "Animation",
+    "tags": [
+      "Animation"
+    ],
+    "href": "/devlog/#priest-run-animations",
+    "bodyHtml": "<p>Both male and female versions now have their full run cycle in every direction.</p>\n<p>The lighter silhouette and flowing movement already give the Priest a calmer, more graceful feel in motion.</p>\n<p>Next: more classes, then basic attacks.</p>\n<h3>Side movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/priest-f-run-side.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/priest-m-run-side.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>\n<h3>Down movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/priest-f-run-down.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/priest-m-run-down.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>\n<h3>Up movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/priest-f-run-up.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/priest-m-run-up.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>",
+    "mock": false,
+    "hero": {
+      "src": "/assets/devlog/uploads/priest-cover.png",
+      "label": "Priest Run Animations",
+      "alt": "Priest Run Animations",
+      "dims": "cover",
+      "ratio": "16x9",
+      "pixelArt": false
+    }
+  },
+  {
     "id": "first-video-in-progress",
     "date": "2026-11-15",
     "title": "Our First Video Is in the Works",
