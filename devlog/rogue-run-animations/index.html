@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Rogue Run Animations — ENDLESS BELOW</title>
+  <meta name="description" content="Rogue movement is finally in.">
+  <meta name="theme-color" content="#050506">
+
+  <!-- Canonical domain. TODO(deploy): confirm before launch. -->
+  <link rel="canonical" href="https://endless-below.com/devlog/rogue-run-animations/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ENDLESS BELOW">
+  <meta property="og:title" content="Rogue Run Animations — ENDLESS BELOW">
+  <meta property="og:description" content="Rogue movement is finally in.">
+  <meta property="og:url" content="https://endless-below.com/devlog/rogue-run-animations/">
+  <!-- TODO(art): replace with the final 1200x630 share image -->
+  <meta property="og:image" content="https://endless-below.com/assets/media/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="ENDLESS BELOW key art placeholder">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rogue Run Animations — ENDLESS BELOW">
+  <meta name="twitter:description" content="Rogue movement is finally in.">
+  <meta name="twitter:image" content="https://endless-below.com/assets/media/og-image.png">
+  <!-- TODO(links): add twitter:site once the account exists -->
+
+  <link rel="icon" href="/assets/branding/icon.png" type="image/png">
+  <link rel="icon" href="/assets/branding/favicon-512.png" sizes="512x512" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/branding/apple-touch-icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&display=swap">
+
+  <link rel="stylesheet" href="/css/variables.css?v=6550e7be01">
+  <link rel="stylesheet" href="/css/base.css?v=91359af2af">
+  <link rel="stylesheet" href="/css/layout.css?v=0438799f35">
+  <link rel="stylesheet" href="/css/components.css?v=f58556b090">
+  <link rel="stylesheet" href="/css/pages.css?v=f2b57ded55">
+  <link rel="stylesheet" href="/css/pixel-ui.css?v=2d4f340ad8">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="atmos" aria-hidden="true">
+    <div class="atmos__glow"></div>
+    <canvas class="atmos__motes"></canvas>
+    <div class="atmos__grain"></div>
+    <div class="atmos__vignette"></div>
+  </div>
+
+  <div class="page">
+    <header class="site-header site-header--solid">
+      <div class="container site-header__inner">
+        <a class="brand" href="/home/" aria-label="Endless Below">
+          <img class="brand__sigil" src="/assets/branding/icon.png" width="64" height="64" alt="" decoding="async" aria-hidden="true">
+        </a>
+
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span class="nav-toggle__bars" aria-hidden="true"></span>
+          <span>Menu</span>
+        </button>
+
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <ul class="site-nav__list">
+            <li><a class="site-nav__link" href="/home/">Home</a></li>
+            <li><a class="site-nav__link" href="/characters/">Characters</a></li>
+            <li><a class="site-nav__link" href="/devlog/" aria-current="page">Devlog</a></li>
+          </ul>
+        </nav>
+
+        <div class="site-header__cta">
+          <!-- TODO(links): replace "#" with the real Steam wishlist URL -->
+          <a class="btn btn--sm btn--primary" href="#" data-todo="steam-wishlist">Wishlist</a>
+          <a class="btn btn--sm" href="https://discord.gg/qryMCKrgK9" target="_blank" rel="noopener noreferrer">Discord</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page__main" id="main">
+      <article class="devlog-post">
+        <header class="page-header">
+          <div class="container page-header__inner">
+            <p class="eyebrow"><a href="/devlog/">Devlog</a></p>
+            <h1 class="page-header__title">Rogue Run Animations</h1>
+            <div class="devlog-entry__meta">
+              <time datetime="2026-11-19">19 November 2026</time>
+              <ul class="tag-list"><li><span class="tag">Animation</span></li></ul>
+            </div>
+          </div>
+        </header>
+
+        <section class="section">
+          <div class="container">
+            <div class="prose devlog-post__body">
+<p>Both male and female versions now have their full run cycle in every direction.</p>
+<p>The lighter silhouette and quicker movement already give the class a much more agile feel in motion.</p>
+<p>Next: more classes, then basic attacks.</p>
+<h3>Side movement</h3>
+<section class="devlog-pair"><div class="devlog-pair__grid"><figure class="devlog-pair__cell"><div class="devlog-pair__stage"><img class="devlog-media__img" src="/assets/devlog/uploads/rogue-f-run-side.webp" alt="Female" loading="lazy" decoding="async" width="32" height="32" style="--native-w:32;--native-h:32"></div><figcaption class="devlog-pair__label">Female</figcaption></figure><figure class="devlog-pair__cell"><div class="devlog-pair__stage"><img class="devlog-media__img" src="/assets/devlog/uploads/rogue-m-run-side.webp" alt="Male" loading="lazy" decoding="async" width="32" height="32" style="--native-w:32;--native-h:32"></div><figcaption class="devlog-pair__label">Male</figcaption></figure></div></section>
+<h3>Down movement</h3>
+<section class="devlog-pair"><div class="devlog-pair__grid"><figure class="devlog-pair__cell"><div class="devlog-pair__stage"><img class="devlog-media__img" src="/assets/devlog/uploads/rogue-f-run-down.webp" alt="Female" loading="lazy" decoding="async" width="32" height="32" style="--native-w:32;--native-h:32"></div><figcaption class="devlog-pair__label">Female</figcaption></figure><figure class="devlog-pair__cell"><div class="devlog-pair__stage"><img class="devlog-media__img" src="/assets/devlog/uploads/rogue-m-run-down.webp" alt="Male" loading="lazy" decoding="async" width="32" height="32" style="--native-w:32;--native-h:32"></div><figcaption class="devlog-pair__label">Male</figcaption></figure></div></section>
+<h3>Up movement</h3>
+<section class="devlog-pair"><div class="devlog-pair__grid"><figure class="devlog-pair__cell"><div class="devlog-pair__stage"><img class="devlog-media__img" src="/assets/devlog/uploads/rogue-f-run-up.webp" alt="Female" loading="lazy" decoding="async" width="32" height="32" style="--native-w:32;--native-h:32"></div><figcaption class="devlog-pair__label">Female</figcaption></figure><figure class="devlog-pair__cell"><div class="devlog-pair__stage"><img class="devlog-media__img" src="/assets/devlog/uploads/rogue-m-run-up.webp" alt="Male" loading="lazy" decoding="async" width="32" height="32" style="--native-w:32;--native-h:32"></div><figcaption class="devlog-pair__label">Male</figcaption></figure></div></section>
+            </div>
+            <p class="devlog-post__back">
+              <a class="btn btn--sm" href="/devlog/"><span class="btn__label"><span class="btn__copy">All entries</span></span></a>
+            </p>
+          </div>
+        </section>
+      </article>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="site-footer__grid">
+          <div class="site-footer__brand">
+            <a class="brand" href="/home/">
+          <img class="brand__sigil" src="/assets/branding/icon.png" width="28" height="28" alt="" decoding="async" aria-hidden="true">
+              <span class="brand__name">Endless Below</span>
+            </a>
+            <p class="site-footer__tagline">A dark fantasy online action RPG.</p>
+          </div>
+
+          <div class="site-footer__links">
+            <div class="footer-col">
+              <h4>Follow</h4>
+              <!-- TODO(links): all external destinations are placeholders -->
+              <ul>
+                <li><a href="#" data-todo="steam">Steam</a></li>
+                <li><a href="https://discord.gg/qryMCKrgK9" target="_blank" rel="noopener noreferrer">Discord</a></li>
+                <li><a href="#" data-todo="youtube">YouTube</a></li>
+                <li><a href="#" data-todo="twitter">X / Twitter</a></li>
+                <li><a href="#" data-todo="github">GitHub</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Site</h4>
+              <ul>
+                <li><a href="/home/">Home</a></li>
+                <li><a href="/characters/">Characters</a></li>
+                <li><a href="/devlog/">Devlog</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="site-footer__base">
+          <span>&copy; <span data-year>2026</span> Endless Below</span>
+          <span>Work in progress -- all content subject to change</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/js/main.js?v=e8c43298cd"></script>
+</body>
+</html>

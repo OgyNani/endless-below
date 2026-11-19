@@ -4,6 +4,27 @@
   var DATA = (global.EB_DATA = global.EB_DATA || {});
   DATA.devlog = [
   {
+    "id": "rogue-run-animations",
+    "date": "2026-11-19",
+    "title": "Rogue Run Animations",
+    "summary": "Rogue movement is finally in.",
+    "tag": "Animation",
+    "tags": [
+      "Animation"
+    ],
+    "href": "/devlog/#rogue-run-animations",
+    "bodyHtml": "<p>Both male and female versions now have their full run cycle in every direction.</p>\n<p>The lighter silhouette and quicker movement already give the class a much more agile feel in motion.</p>\n<p>Next: more classes, then basic attacks.</p>\n<h3>Side movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/rogue-f-run-side.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/rogue-m-run-side.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>\n<h3>Down movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/rogue-f-run-down.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/rogue-m-run-down.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>\n<h3>Up movement</h3>\n<section class=\"devlog-pair\"><div class=\"devlog-pair__grid\"><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/rogue-f-run-up.webp\" alt=\"Female\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Female</figcaption></figure><figure class=\"devlog-pair__cell\"><div class=\"devlog-pair__stage\"><img class=\"devlog-media__img\" src=\"/assets/devlog/uploads/rogue-m-run-up.webp\" alt=\"Male\" loading=\"lazy\" decoding=\"async\" width=\"32\" height=\"32\" style=\"--native-w:32;--native-h:32\"></div><figcaption class=\"devlog-pair__label\">Male</figcaption></figure></div></section>",
+    "mock": false,
+    "hero": {
+      "src": "/assets/devlog/uploads/rogue-cover.png",
+      "label": "Rogue Run Animations",
+      "alt": "Rogue Run Animations",
+      "dims": "cover",
+      "ratio": "16x9",
+      "pixelArt": false
+    }
+  },
+  {
     "id": "priest-run-animations",
     "date": "2026-11-17",
     "title": "Priest Run Animations",
