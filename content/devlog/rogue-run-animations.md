@@ -1,15 +1,15 @@
 ---
-title: Rogue Run Animations
-slug: rogue-run-animations
-date: 2026-11-19
+title: Spellblade Run Animations
+slug: spellblade-run-animations
+date: 2026-11-23
 tag: Animation
-summary: Rogue movement is finally in.
-cover: /assets/devlog/uploads/rogue-cover.png
+summary: Spellblade movement is finally in.
+cover: /assets/devlog/uploads/spellblade-cover.png
 published: true
 ---
 Both male and female versions now have their full run cycle in every direction.
 
-The lighter silhouette and quicker movement already give the class a much more agile feel in motion.
+The floating blades already give the class a much more distinct feel in motion and make the silhouette stand out immediately.
 
 Next: more classes, then basic attacks.
 
@@ -17,10 +17,10 @@ Next: more classes, then basic attacks.
 
 :::animation-pair
 title: 
-left: /assets/devlog/uploads/rogue-f-run-side.webp
+left: /assets/devlog/uploads/spellbalde-f-run-side.webp
 left_label: Female
 left_alt: 
-right: /assets/devlog/uploads/rogue-m-run-side.webp
+right: /assets/devlog/uploads/spellbalde-m-run-side.webp
 right_label: Male
 right_alt: 
 :::
@@ -29,10 +29,10 @@ right_alt:
 
 :::animation-pair
 title: 
-left: /assets/devlog/uploads/rogue-f-run-down.webp
+left: /assets/devlog/uploads/spellbalde-f-run-down.webp
 left_label: Female
 left_alt: 
-right: /assets/devlog/uploads/rogue-m-run-down.webp
+right: /assets/devlog/uploads/spellbalde-m-run-down.webp
 right_label: Male
 right_alt: 
 :::
@@ -41,10 +41,10 @@ right_alt:
 
 :::animation-pair
 title: 
-left: /assets/devlog/uploads/rogue-f-run-up.webp
+left: /assets/devlog/uploads/spellbalde-f-run-up.webp
 left_label: Female
 left_alt: 
-right: /assets/devlog/uploads/rogue-m-run-up.webp
+right: /assets/devlog/uploads/spellbalde-m-run-up.webp
 right_label: Male
 right_alt: 
 :::
